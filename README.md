@@ -6,7 +6,7 @@
 
 ## The Stack
 
-- The primary stack chosen for this project mirrors the T3 stack, created by Theo Browne.
+- The primary stack chosen for this project mirrors the T3 stack, created by Theo Browne. (https://create.t3.gg/)
 - T3 Leverages the following technologies/languages
 
 ### Typescript
