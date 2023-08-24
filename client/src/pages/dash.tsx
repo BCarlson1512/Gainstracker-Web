@@ -25,13 +25,13 @@ export default function dash() {
                         <div className="flex flex-row justify-center items-center">
                             <Link
                                 className="text-xl text-white font-semibold p-4 m-4 border-2 rounded-lg"
-                                href=""
+                                href="/create"
                             >
                                 Create New Workout
                             </Link>
                             <Link
                                 className="text-xl text-white font-semibold p-4 m-4 border-2 rounded-lg"
-                                href=""
+                                href="/workouts"
                             >
                                 View Existing Workouts
                             </Link>
@@ -41,6 +41,16 @@ export default function dash() {
                         <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Lbs Lifted"}/>
                         <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Workouts This Week"}/>
                         <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Sets Completed"}/>
+                    </div>
+                    <div className="flex flex-row justify-center items-center">
+                        <div className="p-4 mx-2">
+                            <h3 className="text-white text-3xl font-semibold">Weekly Volume</h3>
+                            {/* TODO: Chartjs charts */}
+                        </div>
+                        <div className="p-4 mx-2">
+                            <h3 className="text-white text-3xl font-semibold">Your PR History</h3>
+                            {/* TODO: Chartjs charts */}
+                        </div>
                     </div>
                 </div>
             </main>
