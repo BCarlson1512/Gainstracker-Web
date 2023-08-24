@@ -31,6 +31,12 @@ export default function dash() {
                             </Link>
                             <Link
                                 className="text-xl text-white font-semibold p-4 m-4 border-2 rounded-lg"
+                                href="/log"
+                            >
+                                Log A Workout
+                            </Link>
+                            <Link
+                                className="text-xl text-white font-semibold p-4 m-4 border-2 rounded-lg"
                                 href="/workouts"
                             >
                                 View Existing Workouts
