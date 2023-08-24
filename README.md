@@ -42,6 +42,10 @@
 
 - Similar to an ORM. When used with TRPC, ensures full type safety from the API to database
 
+### ChartJS
+
+- There's still not a great wrapper used for D3 and react, so for any sort of graphing/charting of data this is my go to library
+
 ## Contributions
 
 - See an issue with the app? Make an issue on the respective project (Web/Mobile)
