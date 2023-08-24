@@ -2,7 +2,19 @@
 
 ## Roadmap (AKA: A long todo list)
 
+- Design UI
+  - Create Workouts
+  - Log Workouts
+  - View Workouts
+  - User Statistics
+- Design API
+- Settle on DB for project
+- Determine cloud deployment (AWS/GCP)
+
 ## The Why
+
+- I'm a huge fitness guru, and until now, i've been utilizing a mix of the old school pen and paper method and the notes app on my phone to track my progressive overload
+- Instead of utilizing the notes app, which becomes really hard to manage, I thought why not build a better system
 
 ## The Stack
 
