@@ -1,6 +1,14 @@
 import Head from "next/head";
 
 export default function create() {
+    {/*TODO: 
+        Create workout form:
+        1 Select exercise
+        2 Select Number of sets
+        Allow repetition of above steps 1 and 2
+        Validate form
+        API: Create new workout plan for user
+    */}
     return(
         <>
             <Head>
