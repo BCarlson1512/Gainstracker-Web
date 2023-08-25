@@ -1,5 +1,5 @@
 
-export default function workouts() {
+const workouts: React.FC = () => {
     {/* TODO: 
         API: Get a user's workouts
         Display Exercises
@@ -11,3 +11,5 @@ export default function workouts() {
         </div>
     )
 }
+
+export default workouts;

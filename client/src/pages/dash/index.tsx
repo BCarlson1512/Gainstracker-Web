@@ -3,7 +3,7 @@ import Link from "next/link";
 import StatsCard from "~/components/dash/StatsCard";
 import UserCard from "~/components/user/UserCard";
 
-export default function dash() {
+const dash: React.FC = (props) => {
 
     return(
         <>
@@ -63,3 +63,5 @@ export default function dash() {
         </>
     )
 }
+
+export default dash;
