@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import DashNav from "~/components/dash/DashNav";
 import StatsCard from "~/components/dash/StatsCard";
 import UserCard from "~/components/user/UserCard";
 
@@ -9,6 +10,7 @@ const dash: React.FC = (props) => {
             <Head>
                 <title>Dashboard</title>
             </Head>
+            <DashNav />
             <main className="flex min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
                 <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
                     <div className="flex flex-row items-center justify-between">
