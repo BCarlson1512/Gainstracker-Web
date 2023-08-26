@@ -1,47 +1,64 @@
-import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { z } from "zod";
 import { prisma } from "~/server/db";
 
 const trainingPlanRouter = createTRPCRouter({
     getAll: publicProcedure
     .query(async({ctx}) => {
-        const trainingPlans = await prisma.trainingPlan.findMany({take: 100,});
+        const trainingPlans = await prisma.trainingPlan.findMany({
+            take: 100,
+        });
         return trainingPlans;
     }),
     getByUserID: publicProcedure
-    .input(z.object({
-        userId: z.string()
-    }))
+    .input(z.string())
     .query(async({ctx, input}) => {
-        const trainingPlan = await prisma.trainingPlan.findMany({
+        const trainingPlan = await prisma.TrainingPlan.findMany({
             where: {
-                id: input,
+                authorId: input,
             },
             take: 100,
         });
         return trainingPlan;
     }),
     getID: publicProcedure
-    .input(z.object({
-        trainingPlanId: z.string()
-    }))
+    .input(z.string())
     .query(async({ctx, input}) => {
-        const trainingPlan = await prisma.trainingPlan.findFirst({
+        const trainingPlan = await prisma.TrainingPlan.findFirst({
             where: {
-                id: input.trainingPlanId
+                id: input
             }
         })
         return trainingPlan;
     }),
-    deletetrainingPlan: publicProcedure
+    deleteTrainingPlan: publicProcedure
     .input(z.object({id: z.string()}))
     .mutation(async({ctx, input}) => {
-        const deletedTrainingPlan = await prisma.trainingPlan.delete({
+        const deletedTrainingPlan = await prisma.TrainingPlan.delete({
             where: {
                 id: input.id
             }
-        })
+        });
         return deletedTrainingPlan;
-    })
+    }),
+    updateTrainingPlan: publicProcedure
+    .input(
+        z.object({
+            id: z.string(),
+            name: z.string(),
+            exercises: z.custom()
+        })
+    )
+    .mutation(async({ctx, input}) => {
+        const trainingPlan = await prisma.TrainingPlan.update({
+            where: {
+                id: input.id,
+            },
+            data: {
+                
+            }
+        })
+        return trainingPlan;
+    }),
 })
 export type trainingPlanRouter = typeof trainingPlanRouter;

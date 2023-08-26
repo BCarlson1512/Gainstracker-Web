@@ -56,10 +56,10 @@ model User {
   dateJoined    DateTime       @default(now())
   accounts      Account[]
   sessions      Session[]
-  trainingPlans  trainingPlan[]
+  trainingPlans  TrainingPlan[]
 }
 
-model trainingPlan {
+model TrainingPlan {
   id          String     @id @default(cuid())
   dateCreated DateTime   @default(now())
   name        String
@@ -73,8 +73,8 @@ model Exercise {
   name           String
   muscleGrouping String
   sets           Set[]
-  belongsTo      trainingPlan @relation(fields: [tpId], references: [id])
-  tpId           String
+  belongsTo      TrainingPlan @relation(fields: [trainingId], references: [id])
+  trainingId           String
 }
 
 model Set {
