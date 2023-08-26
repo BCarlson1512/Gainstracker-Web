@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import ChartsCard from "~/components/dash/ChartsCard";
 import DashNav from "~/components/dash/DashNav";
 import StatsCard from "~/components/dash/StatsCard";
 import UserCard from "~/components/user/UserCard";
@@ -50,30 +51,10 @@ const dash: React.FC = (props) => {
                         <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Sets Completed"}/>
                     </div>
                     <div className="flex flex-row justify-center items-center">
-                        <div className="border border-gray-100 bg-white rounded-lg drop-shadow-md flex flex-col items-center h-48 p-4 mx-2">
-                            <div className="flex flex-row justify-between">
-                                <h3 className="text-gray-600 text-2xl font-semibold border-b-2 pb-1">Weekly Volume</h3>
-                            </div>
-                            {/* TODO: Chartjs charts */}
-                        </div>
-                        <div className="border border-gray-100 bg-white rounded-lg drop-shadow-md flex flex-col items-center h-48 p-4 mx-2">
-                            <div className="flex flex-row justify-between">
-                                <h3 className="text-gray-600 text-2xl font-semibold border-b-2 pb-1">1 Rep Maxes</h3>
-                            </div>
-                            {/* TODO: Chartjs charts */}
-                        </div>
-                        <div className="border border-gray-100 bg-white rounded-lg drop-shadow-md flex flex-col items-center h-48 p-4 mx-2">
-                            <div className="flex flex-row justify-between">
-                                <h3 className="text-gray-600 text-2xl font-semibold border-b-2 pb-1">Your PR History</h3>
-                            </div>
-                            {/* TODO: Chartjs charts */}
-                        </div>
-                        <div className="border border-gray-100 bg-white rounded-lg drop-shadow-md flex flex-col items-center h-48 p-4 mx-2">
-                            <div className="flex flex-row justify-between">
-                                <h3 className="text-gray-600 text-2xl font-semibold border-b-2 pb-1">Exercises by muscle group</h3>
-                            </div>
-                            {/* TODO: Chartjs charts */}
-                        </div>
+                        <ChartsCard chartHeading="Weekly Volume"/>
+                        <ChartsCard chartHeading="1 Rep Maxes"/>
+                        <ChartsCard chartHeading="Your PR History"/>
+                        <ChartsCard chartHeading="Exercises by Muscle Group"/>
                     </div>
                 </div>
             </main>
