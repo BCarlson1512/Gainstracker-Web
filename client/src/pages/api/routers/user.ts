@@ -5,7 +5,7 @@ import { prisma } from "~/server/db";
 const userRouter = createTRPCRouter({
     getAll: publicProcedure
     .query(async({ctx}) => {
-        const users = await ctx.prisma.user.findMany({
+        const users = await prisma.user.findMany({
             take: 100,
         });
         return users;
@@ -13,7 +13,7 @@ const userRouter = createTRPCRouter({
     getID: publicProcedure
     .input(z.string())
     .query(async({ctx, input}) => {
-        const user = await ctx.prisma.user.findFirst({
+        const user = await prisma.user.findFirst({
             where: {
                 id: input,
             },
@@ -28,7 +28,7 @@ const userRouter = createTRPCRouter({
 
     }))
     .mutation(async({ctx, input}) => {
-        const user = await ctx.prisma.user.create({
+        const user = await prisma.user.create({
             data: {
                 name: input.name,
                 image: input.profileUrl,
@@ -46,7 +46,7 @@ const userRouter = createTRPCRouter({
         })
     )
     .mutation(async({ctx, input}) => {
-        const user = await ctx.prisma.user.update({
+        const user = await prisma.user.update({
             where: {
                 id: input.id,
             },
@@ -61,7 +61,7 @@ const userRouter = createTRPCRouter({
     deleteUser: publicProcedure
     .input(z.object({id: z.string()}))
     .mutation(async({ctx, input}) => {
-        const deletedUser = await ctx.prisma.user.delete({
+        const deletedUser = await prisma.user.delete({
             where: {
                 id: input.id
             }
