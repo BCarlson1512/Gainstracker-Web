@@ -1,8 +1,10 @@
 import Head from "next/head";
 import Link from "next/link";
+import ChartsCard from "~/components/dash/ChartsCard";
 import DashNav from "~/components/dash/DashNav";
 import StatsCard from "~/components/dash/StatsCard";
 import UserCard from "~/components/user/UserCard";
+import {BiExit} from 'react-icons/bi'
 
 const dash: React.FC = (props) => {
     return(
@@ -11,17 +13,16 @@ const dash: React.FC = (props) => {
                 <title>Dashboard</title>
             </Head>
             <DashNav />
-            <main className="flex min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-                <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-                    <div className="flex flex-row items-center justify-between">
-                        <div className="grid grid-cols-4 gap-4 ml-96 text-white">
+            <main className="flex min-h-screen w-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+                <div className="flex w-full flex-col gap-12 px-4 py-16 ">
+                    <div className="flex justify-end items-center ml-46">
+                        <div className="grid grid-cols-3 gap-4 text-white mr-20">
                             <UserCard />
-                            <div className="text-xl font-extrabold max-w-xs text-center"> | </div>
-                            <div className="text-xl">Notifications</div>
-                            <Link className="text-xl" href="/">Exit</Link>
+                            <div className="text-xl border-l-2 px-6 text-center">Notifications</div>
+                            <Link className="text-xl text-center" href="/"><BiExit size="28"/></Link>
                         </div>
                     </div>
-                    <div className="flex justify-space-between items-center">
+                    <div className="flex ml-20 pl-8 w-[90vw] justify-between items-center">
                         <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-[5rem]"> Dashboard </h1>
                         <div className="flex flex-row justify-center items-center">
                             <Link
@@ -44,37 +45,29 @@ const dash: React.FC = (props) => {
                             </Link>
                         </div>
                     </div>
-                    <div className="flex flex-row justify-center items-center">
-                        <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Lbs Lifted"}/>
-                        <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Workouts This Week"}/>
-                        <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Sets Completed"}/>
-                    </div>
-                    <div className="flex flex-row justify-center items-center">
-                        <div className="border border-gray-100 bg-white rounded-lg drop-shadow-md flex flex-col items-center h-48 p-4 mx-2">
-                            <div className="flex flex-row justify-between">
-                                <h3 className="text-gray-600 text-2xl font-semibold border-b-2 pb-1">Weekly Volume</h3>
+                    <div className="flex flex-row justify-between items-start ml-14 px-10">
+                        <div className="grid grid-rows-2 grid-cols-2">
+                            <div className="col-span-2">
+                                <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Lbs Lifted"}/>
                             </div>
-                            {/* TODO: Chartjs charts */}
+                            <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Workouts This Week"}/>
+                            <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Sets Completed"}/>
                         </div>
-                        <div className="border border-gray-100 bg-white rounded-lg drop-shadow-md flex flex-col items-center h-48 p-4 mx-2">
-                            <div className="flex flex-row justify-between">
-                                <h3 className="text-gray-600 text-2xl font-semibold border-b-2 pb-1">1 Rep Maxes</h3>
+                        <div className="flex flex-col justify-center items-center">
+                            <div className="grid grid-cols-3 gap-4 px-4 mr-6">
+                                <div className="col-span-3">
+                                    <ChartsCard chartHeading="Weekly Volume"/>
+                                </div>
+                                <div className="col-span-2">
+                                    <ChartsCard chartHeading="Exercises by Muscle Group"/>
+                                </div>
+                                <div className="col-span-1"></div>
+                                <ChartsCard chartHeading="1 Rep Maxes"/>
+                                <ChartsCard chartHeading="Your PR History"/>
                             </div>
-                            {/* TODO: Chartjs charts */}
-                        </div>
-                        <div className="border border-gray-100 bg-white rounded-lg drop-shadow-md flex flex-col items-center h-48 p-4 mx-2">
-                            <div className="flex flex-row justify-between">
-                                <h3 className="text-gray-600 text-2xl font-semibold border-b-2 pb-1">Your PR History</h3>
-                            </div>
-                            {/* TODO: Chartjs charts */}
-                        </div>
-                        <div className="border border-gray-100 bg-white rounded-lg drop-shadow-md flex flex-col items-center h-48 p-4 mx-2">
-                            <div className="flex flex-row justify-between">
-                                <h3 className="text-gray-600 text-2xl font-semibold border-b-2 pb-1">Exercises by muscle group</h3>
-                            </div>
-                            {/* TODO: Chartjs charts */}
                         </div>
                     </div>
+
                 </div>
             </main>
         </>

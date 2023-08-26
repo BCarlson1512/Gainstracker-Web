@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .sidebar-icon {
     @apply relative flex items-center justify-center
             h-16 w-16 mt-2 mb-2 mx-auto shadow-lg rounded-md
@@ -14,4 +13,36 @@
     text-white bg-gray-900 
     text-xs font-bold 
     transition-all duration-100 scale-0 origin-left;
+}
+
+
+
+/** Cards */
+
+.card-general {
+    @apply border border-gray-100 bg-white rounded-lg drop-shadow-md
+    flex flex-col items-center
+    h-48 p-4 mx-2
+}
+
+/* Stats-Cards */
+
+.stats-card {
+    @apply p-4 m-2 
+    flex flex-col justify-center items-center;
+}
+
+.stats-font {
+    @apply text-slate-600 text-base;
+}
+
+/* Charts-Cards */
+
+.charts-container {
+    @apply flex flex-row justify-between;
+}
+
+.charts-heading {
+    @apply text-gray-600 text-2xl font-semibold
+    border-b-2 pb-1;
 }
