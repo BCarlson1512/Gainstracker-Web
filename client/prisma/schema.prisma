@@ -72,6 +72,7 @@ model Exercise {
   id             String       @id @default(cuid())
   name           String
   muscleGrouping String
+  numOfSets      Int
   sets           Set[]
   belongsTo      TrainingPlan @relation(fields: [trainingId], references: [id])
   trainingId           String
