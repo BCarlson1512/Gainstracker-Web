@@ -9,15 +9,15 @@ interface StatsCardProps {
 export default function StatsCard (props: StatsCardProps) {
     return (
         <>
-            <div className="flex flex-col justify-center items-center p-4 m-2">
+            <div className="stats-card card-general">
                 <Image
                     height={50}
                     width={50}
                     alt="barbell"
                     src="/static/barbell-icon.svg"
                 />
-                <p className="text-white text-md font-semibold">{0}</p>
-                <p className="text-white text-md italic">Workouts this week</p>
+                <p className="stats-font font-semibold">{0}</p>
+                {props.statsMsg && <p className="stats-font italic">{props.statsMsg}</p>}
             </div>
         </>
     )

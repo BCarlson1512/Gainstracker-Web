@@ -22,7 +22,7 @@ const dash: React.FC = (props) => {
                             <Link className="text-xl" href="/">Exit</Link>
                         </div>
                     </div>
-                    <div className="flex justify-space-between items-center">
+                    <div className="flex justify-between items-center">
                         <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-[5rem]"> Dashboard </h1>
                         <div className="flex flex-row justify-center items-center">
                             <Link
