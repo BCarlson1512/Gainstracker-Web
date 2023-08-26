@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-export default function create() {
+const create: React.FC = () => {
     {/*TODO: 
         Create workout form:
         1 Select exercise
@@ -21,3 +21,5 @@ export default function create() {
 
     )
 }
+
+export default create;

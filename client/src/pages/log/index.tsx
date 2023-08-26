@@ -1,4 +1,4 @@
-export default function log() {
+const log: React.FC = () => {
     {/*TODO: 
         API: Get User's workout plan
         Allow user to add/remove sets
@@ -14,3 +14,4 @@ export default function log() {
         </>
     )
 }
+export default log;
