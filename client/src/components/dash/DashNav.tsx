@@ -1,5 +1,5 @@
 import Link from "next/link";
-import {BsPlusCircle} from 'react-icons/bs'
+import {BsPlusCircle, BsMoonStarsFill} from 'react-icons/bs'
 import {BiNotepad, BiPencil} from 'react-icons/bi'
 import {CiViewList} from 'react-icons/ci'
 
@@ -10,6 +10,10 @@ const DashNav: React.FC = () => {
             <SideBarIcon href="/dash/workouts" icon={<CiViewList size="28"/>} tooltip="view workout"/>
             <SideBarIcon href="/dash/edit" icon={<BiPencil size="28"/>} tooltip="edit workout"/>
             <SideBarIcon href="/log" icon={<BiNotepad size="28"/>} tooltip="log workout"/>
+            <div className="sidebar-icon">
+                {/*TODO: Implement darkmode toggle*/}
+                <BsMoonStarsFill size="28"/>
+            </div>
         </div>
     )
 }
