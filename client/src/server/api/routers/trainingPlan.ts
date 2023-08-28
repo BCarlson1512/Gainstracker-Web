@@ -13,7 +13,7 @@ const trainingPlanRouter = createTRPCRouter({
     getByUserID: publicProcedure
     .input(z.string())
     .query(async({ctx, input}) => {
-        const trainingPlan = await prisma.TrainingPlan.findMany({
+        const trainingPlan = await prisma.trainingPlan.findMany({
             where: {
                 authorId: input,
             },
@@ -24,17 +24,36 @@ const trainingPlanRouter = createTRPCRouter({
     getID: publicProcedure
     .input(z.string())
     .query(async({ctx, input}) => {
-        const trainingPlan = await prisma.TrainingPlan.findFirst({
+        const trainingPlan = await prisma.trainingPlan.findFirst({
             where: {
                 id: input
             }
         })
         return trainingPlan;
     }),
-    deleteTrainingPlan: publicProcedure
-    .input(z.object({id: z.string()}))
+    createTrainingPlan: publicProcedure
+    .input(z.object({
+        name: z.string(),
+        exercises: z.custom(),
+        author: z.string()
+        //TODO: Validate exercise types
+    }))
     .mutation(async({ctx, input}) => {
-        const deletedTrainingPlan = await prisma.TrainingPlan.delete({
+        const createdTrainingPlan = await prisma.trainingPlan.create({
+            data: {
+                name: input.name,
+                exercises: input.exercises,
+                authorId: input.author
+            }
+        });
+        return createdTrainingPlan;
+    }),
+    deleteTrainingPlan: publicProcedure
+    .input(z.object({
+        id: z.string()
+    }))
+    .mutation(async({ctx, input}) => {
+        const deletedTrainingPlan = await prisma.trainingPlan.delete({
             where: {
                 id: input.id
             }
@@ -50,7 +69,7 @@ const trainingPlanRouter = createTRPCRouter({
         })
     )
     .mutation(async({ctx, input}) => {
-        const trainingPlan = await prisma.TrainingPlan.update({
+        const trainingPlan = await prisma.trainingPlan.update({
             where: {
                 id: input.id,
             },
