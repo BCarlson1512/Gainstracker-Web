@@ -63,7 +63,7 @@ model TrainingPlan {
   id          String     @id @default(cuid())
   dateCreated DateTime   @default(now())
   name        String
-  Exercises   Exercise[]
+  exercises   Exercise[]
   author      User       @relation(fields: [authorId], references: [id])
   authorId    String
 }
