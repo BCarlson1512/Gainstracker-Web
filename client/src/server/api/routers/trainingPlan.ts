@@ -1,8 +1,9 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { prisma } from "~/server/db";
+import { populateExercise } from "~/utils/exercises/exercises";
 
-const trainingPlanRouter = createTRPCRouter({
+export const trainingPlanRouter = createTRPCRouter({
     getAll: publicProcedure
     .query(async({ctx}) => {
         const trainingPlans = await prisma.trainingPlan.findMany({
@@ -34,18 +35,25 @@ const trainingPlanRouter = createTRPCRouter({
     createTrainingPlan: publicProcedure
     .input(z.object({
         name: z.string(),
-        exercises: z.custom(),
+        exercises: z.any(),
         author: z.string()
-        //TODO: Validate exercise types
     }))
     .mutation(async({ctx, input}) => {
         const createdTrainingPlan = await prisma.trainingPlan.create({
             data: {
                 name: input.name,
-                exercises: input.exercises,
                 authorId: input.author
             }
         });
+        if (createdTrainingPlan.id && input.exercises) {
+            populateExercise(input.exercises, createdTrainingPlan.id)
+            return await prisma.trainingPlan.update({
+                where: {id: createdTrainingPlan.id},
+                data: {
+                    exercises: createdTrainingPlan.exercises
+                }
+            })
+        }
         return createdTrainingPlan;
     }),
     deleteTrainingPlan: publicProcedure
@@ -69,6 +77,7 @@ const trainingPlanRouter = createTRPCRouter({
         })
     )
     .mutation(async({ctx, input}) => {
+        populateExercise(input.exercises, id)
         const trainingPlan = await prisma.trainingPlan.update({
             where: {
                 id: input.id,

@@ -2,7 +2,7 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from 'zod'
 import { prisma } from "~/server/db";
 
-const userRouter = createTRPCRouter({
+export const userRouter = createTRPCRouter({
     getAll: publicProcedure
     .query(async({ctx}) => {
         const users = await prisma.user.findMany({
