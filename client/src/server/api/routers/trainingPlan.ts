@@ -1,7 +1,7 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { prisma } from "~/server/db";
-import { populateExercise } from "~/utils/exercises";
+import { populateExercise } from "~/utils/exercises/exercises";
 
 export const trainingPlanRouter = createTRPCRouter({
     getAll: publicProcedure
