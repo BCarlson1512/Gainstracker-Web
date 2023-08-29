@@ -1,8 +1,9 @@
 import Head from "next/head";
-import { useState } from "react";
+import React, { useState } from "react";
 import DashNav from "~/components/dash/DashNav";
 import ExerciseInput from "~/components/dash/ExerciseInput";
 import type Exercise from "~/types/Exercise";
+import { api } from "~/utils/api";
 
 const Create: React.FC = () => {
     {/*TODO: 
@@ -11,6 +12,20 @@ const Create: React.FC = () => {
     */}
     const [planName, setPlanName] = useState<string>("");
     const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
+    
+    const {mutate} = api.trainingPlan.createTrainingPlan.useMutation({
+        onSuccess: () => {
+            console.log("Successfully created training plan")
+        },
+        onError: () => {
+            console.log("Error creating training plan")
+        }
+    });
+
+    const handleSubmit = (e:React.SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        mutate({name:planName, author: "1", exercises: planExercises})
+    }
 
     const handleExerciseClick = () => {
         const newExercise:Exercise = {name: "", muscleGrouping: "", numOfSets: 0}
@@ -40,10 +55,10 @@ const Create: React.FC = () => {
                     <h1 className="text-white font-bold text-3xl drop-shadow-sm">Create a New Training Plan</h1>
                 </div>
                 <div>
-                    <form className="flex flex-col justify-center" onSubmit={() => {return;}}>
+                    <form className="flex flex-col justify-center" onSubmit={(e) =>{handleSubmit(e)}}>
                         <div>
                             <label htmlFor="name" className="text-white px-2 mx-2">Plan name:</label>
-                            <input id="name" className="text-white px-2 mx-2 border rounded-md" onBlur={(e) => setPlanName(e.target.value)} />
+                            <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" onBlur={(e) => setPlanName(e.target.value)} />
                         </div>
                         <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleExerciseClick}>Add an Exercise</div>
                         {planExercises.map((exercise, index) => {
