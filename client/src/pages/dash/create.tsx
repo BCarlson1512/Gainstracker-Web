@@ -1,5 +1,6 @@
 import Head from "next/head";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import DashNav from "~/components/dash/DashNav";
 import ExerciseInput from "~/components/dash/ExerciseInput";
 import type Exercise from "~/types/Exercise";
@@ -8,23 +9,28 @@ import { api } from "~/utils/api";
 const Create: React.FC = () => {
     {/*TODO: 
         Validate form
-        API: Create new workout plan for user
     */}
     const [planName, setPlanName] = useState<string>("");
     const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
     
     const {mutate} = api.trainingPlan.createTrainingPlan.useMutation({
         onSuccess: () => {
-            console.log("Successfully created training plan")
+            toast.success("Successfully created training plan!")
         },
         onError: () => {
-            console.log("Error creating training plan")
+            toast.error("Failed to create training plan")
         }
     });
 
     const handleSubmit = (e:React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         mutate({name:planName, author: "1", exercises: planExercises})
+    }
+
+    const removeExerciseHandler = (index:number) => {
+        const copyArr = [...planExercises]
+        copyArr.splice(index,1)
+        setPlanExercises(copyArr)
     }
 
     const handleExerciseClick = () => {
@@ -43,6 +49,9 @@ const Create: React.FC = () => {
         setPlanExercises(exercises)
         console.log(planExercises)
     }
+
+    useEffect(() => {
+    }, [planExercises])
 
     return(
         <>
@@ -69,6 +78,7 @@ const Create: React.FC = () => {
                                     name={exercise.name} 
                                     muscleGroup={exercise.muscleGrouping}
                                     handleChange={updateExerciseData}
+                                    handleRemove={removeExerciseHandler}
                                 />
                             )
                         })}
