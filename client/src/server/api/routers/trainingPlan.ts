@@ -73,17 +73,19 @@ export const trainingPlanRouter = createTRPCRouter({
         z.object({
             id: z.string(),
             name: z.string(),
-            exercises: z.custom()
+            exercises: z.any()
         })
     )
     .mutation(async({ctx, input}) => {
-        populateExercise(input.exercises, id)
+        const {id, exercises, name} = input;
+        populateExercise(exercises, id)
         const trainingPlan = await prisma.trainingPlan.update({
             where: {
-                id: input.id,
+                id: id,
             },
             data: {
-                
+                name: name,
+                exercises: exercises,
             }
         })
         return trainingPlan;
