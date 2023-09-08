@@ -24,7 +24,7 @@ const Create: React.FC = () => {
 
     const handleSubmit = (e:React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        mutate({name:planName, author: "1", exercises: planExercises})
+        mutate({name:planName, authorId: "1", exercises: planExercises})
     }
 
     return(

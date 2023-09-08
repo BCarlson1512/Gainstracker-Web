@@ -3,6 +3,19 @@ import { z } from "zod";
 import { prisma } from "~/server/db";
 import { populateExercise } from "~/utils/exercises/exercises";
 
+const exerciseSchema = z.object({
+    id: z.optional(z.string()),
+    name: z.string(),
+    muscleGrouping: z.string(),
+})
+
+const trainingPlanSchema = z.object({
+    id: z.optional(z.string()),
+    name: z.string(),
+    exercises: z.array(exerciseSchema),
+    authorId: z.string()
+})
+
 export const trainingPlanRouter = createTRPCRouter({
     getAll: publicProcedure
     .query(async({ctx}) => {
@@ -33,24 +46,24 @@ export const trainingPlanRouter = createTRPCRouter({
         return trainingPlan;
     }),
     createTrainingPlan: publicProcedure
-    .input(z.object({
-        name: z.string(),
-        exercises: z.any(),
-        author: z.string()
-    }))
+    .input(trainingPlanSchema)
     .mutation(async({ctx, input}) => {
+        const {name, authorId, exercises} = input
         const createdTrainingPlan = await prisma.trainingPlan.create({
             data: {
-                name: input.name,
-                authorId: input.author
+                name: name,
+                authorId: authorId,
             }
         });
-        if (createdTrainingPlan.id && input.exercises) {
-            populateExercise(input.exercises, createdTrainingPlan.id)
+        console.log(createdTrainingPlan);
+        if (createdTrainingPlan.id && exercises) {
+            populateExercise(exercises, createdTrainingPlan.id)
             return await prisma.trainingPlan.update({
                 where: {id: createdTrainingPlan.id},
                 data: {
-                    exercises: createdTrainingPlan.exercises
+                    name: name,
+                    authorId: authorId,
+                    exercises: exercises
                 }
             })
         }
@@ -69,13 +82,7 @@ export const trainingPlanRouter = createTRPCRouter({
         return deletedTrainingPlan;
     }),
     updateTrainingPlan: publicProcedure
-    .input(
-        z.object({
-            id: z.string(),
-            name: z.string(),
-            exercises: z.any()
-        })
-    )
+    .input(trainingPlanSchema)
     .mutation(async({ctx, input}) => {
         const {id, exercises, name} = input;
         populateExercise(exercises, id)

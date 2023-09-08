@@ -28,7 +28,7 @@ const Edit: React.FC = () => {
 
     const handleSubmit = (e:React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        mutate({name:planName, exercises: planExercises, id: "1"})
+        mutate({id: currentPlan?.id, name:planName, exercises: planExercises})
     }
 
     const handleChange = (id:string) => {
