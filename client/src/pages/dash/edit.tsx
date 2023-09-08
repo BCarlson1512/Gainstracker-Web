@@ -14,7 +14,6 @@ const Edit: React.FC = () => {
     const [planName, setPlanName] = useState<string>("");
     const [currentPlan, setCurrentPlan] = useState<TrainingPlan|undefined>(undefined);
     const {planExercises, removeExercise, handleClick, mutateExerciseData} = useExercises();
-    
     const userTrainingPlans = api.trainingPlan.getAll.useQuery(); //TODO: Change this to getByUserID once auth has been setup
 
     const {mutate} = api.trainingPlan.updateTrainingPlan.useMutation({
@@ -28,7 +27,7 @@ const Edit: React.FC = () => {
 
     const handleSubmit = (e:React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        mutate({id: currentPlan?.id, name:planName, exercises: planExercises})
+        mutate({id: currentPlan?.id, name:planName, exercises: planExercises, authorId: "1"})
     }
 
     const handleChange = (id:string) => {
@@ -37,6 +36,7 @@ const Edit: React.FC = () => {
         if (currPlan) { // populate plan data 
             setPlanName(currPlan.name);
         }
+        console.log(currPlan?.exercises)
     }
 
     return(
@@ -65,12 +65,13 @@ const Edit: React.FC = () => {
                                 <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" value={planName} onChange={(e) => setPlanName(e.target.value)} />
                             </div>
                             <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleClick}>Add an Exercise</div>
-                            {planExercises.map((exercise, index) => {
+                            {currentPlan.exercises?.map((exercise, index) => {
                                 return (
                                     <ExerciseInput 
                                         key={index}
                                         id={index} 
-                                        name={exercise.name} 
+                                        name={exercise.name}
+                                        data={exercise}
                                         muscleGroup={exercise.muscleGrouping}
                                         handleChange={mutateExerciseData}
                                         handleRemove={removeExercise}

@@ -20,6 +20,9 @@ export const trainingPlanRouter = createTRPCRouter({
     getAll: publicProcedure
     .query(async({ctx}) => {
         const trainingPlans = await prisma.trainingPlan.findMany({
+            include: {
+                exercises: true
+            },
             take: 100,
         });
         return trainingPlans;
@@ -31,6 +34,9 @@ export const trainingPlanRouter = createTRPCRouter({
             where: {
                 authorId: input,
             },
+            include: {
+                exercises: true
+            },
             take: 100,
         });
         return trainingPlan;
@@ -41,7 +47,10 @@ export const trainingPlanRouter = createTRPCRouter({
         const trainingPlan = await prisma.trainingPlan.findFirst({
             where: {
                 id: input
-            }
+            },
+            include: {
+                exercises: true
+            },
         })
         return trainingPlan;
     }),

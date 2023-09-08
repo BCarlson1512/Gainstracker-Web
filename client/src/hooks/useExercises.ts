@@ -6,7 +6,7 @@ import type Exercise from "~/types/Exercise";
  */
 export const useExercises = () => {
     const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
-    
+
     const removeExercise = (index: number) => {
         const copyArr = [...planExercises]
         copyArr.splice(index,1)
