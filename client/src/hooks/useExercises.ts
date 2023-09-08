@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type Exercise from "~/types/Exercise";
 
 export const useExercises = () => {
@@ -25,6 +25,9 @@ export const useExercises = () => {
         }
         setPlanExercises(exercises)
     }
+
+    useEffect(() => {
+    }, [planExercises])
 
     return {planExercises, removeExercise, handleClick, mutateExerciseData}
 }

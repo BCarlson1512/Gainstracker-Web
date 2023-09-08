@@ -27,9 +27,6 @@ const Create: React.FC = () => {
         mutate({name:planName, author: "1", exercises: planExercises})
     }
 
-    useEffect(() => {
-    }, [planExercises])
-
     return(
         <>
             <Head>

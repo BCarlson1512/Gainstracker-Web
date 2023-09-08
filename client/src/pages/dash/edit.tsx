@@ -31,7 +31,6 @@ const Edit: React.FC = () => {
         mutate({name:planName, exercises: planExercises, id: "1"})
     }
 
-
     return(
         <>
             <Head>
