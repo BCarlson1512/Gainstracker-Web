@@ -34,6 +34,9 @@ const Edit: React.FC = () => {
     const handleChange = (id:string) => {
         const currPlan = userTrainingPlans.data?.find((plan) => plan.id === id)
         setCurrentPlan(currPlan);
+        if (currPlan) { // populate plan data 
+            setPlanName(currPlan.name);
+        }
     }
 
     return(
@@ -59,7 +62,7 @@ const Edit: React.FC = () => {
                         <form className="flex flex-col justify-center" onSubmit={(e) =>{handleSubmit(e)}}>
                             <div>
                                 <label htmlFor="name" className="text-white px-2 mx-2">Plan name:</label>
-                                <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" onBlur={(e) => setPlanName(e.target.value)} />
+                                <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" value={planName} onChange={(e) => setPlanName(e.target.value)} />
                             </div>
                             <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleClick}>Add an Exercise</div>
                             {planExercises.map((exercise, index) => {

@@ -1,9 +1,11 @@
 import {AiOutlineClose} from "react-icons/ai"
+import type Exercise from "~/types/Exercise"
 
 type ExerciseInputProps = {
     name: string,
     muscleGroup: string,
     id: number,
+    data?: Exercise, //TODO: change this to a more fleshed out type
     handleChange: (index: number, name:string|null, mg:string|null, sets?:number) => void,
     handleRemove: (index: number) => void
 }

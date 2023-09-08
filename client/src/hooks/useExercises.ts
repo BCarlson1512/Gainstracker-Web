@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import type Exercise from "~/types/Exercise";
 
+/**
+ * Data Layer for exercises
+ */
 export const useExercises = () => {
     const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
     
