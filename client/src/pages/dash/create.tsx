@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import DashNav from "~/components/dash/DashNav";
 import ExerciseInput from "~/components/dash/ExerciseInput";
-import type Exercise from "~/types/Exercise";
+import { useExercises } from "~/hooks/useExercises";
 import { api } from "~/utils/api";
 
 const Create: React.FC = () => {
@@ -11,8 +11,8 @@ const Create: React.FC = () => {
         Validate form
     */}
     const [planName, setPlanName] = useState<string>("");
-    const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
-    
+    const {planExercises, removeExercise, handleClick, mutateExerciseData} = useExercises();
+
     const {mutate} = api.trainingPlan.createTrainingPlan.useMutation({
         onSuccess: () => {
             toast.success("Successfully created training plan!")
@@ -24,34 +24,8 @@ const Create: React.FC = () => {
 
     const handleSubmit = (e:React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        mutate({name:planName, author: "1", exercises: planExercises})
+        mutate({name:planName, authorId: "1", exercises: planExercises})
     }
-
-    const removeExerciseHandler = (index:number) => {
-        const copyArr = [...planExercises]
-        copyArr.splice(index,1)
-        setPlanExercises(copyArr)
-    }
-
-    const handleExerciseClick = () => {
-        const newExercise:Exercise = {name: "", muscleGrouping: "", numOfSets: 0}
-        setPlanExercises([...planExercises, newExercise])
-    }
-
-    const updateExerciseData = (index:number, name:string|null, mg:string|null, sets?:number) => {
-        const exercises = [...planExercises]
-        const exercise = exercises.find((exerc, i) => index === i)
-        if (exercise) {
-            name ? exercise.name = name : null;
-            mg ? exercise.muscleGrouping = mg : null;
-            sets ? exercise.numOfSets = sets : null;
-        }
-        setPlanExercises(exercises)
-        console.log(planExercises)
-    }
-
-    useEffect(() => {
-    }, [planExercises])
 
     return(
         <>
@@ -69,7 +43,7 @@ const Create: React.FC = () => {
                             <label htmlFor="name" className="text-white px-2 mx-2">Plan name:</label>
                             <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" onBlur={(e) => setPlanName(e.target.value)} />
                         </div>
-                        <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleExerciseClick}>Add an Exercise</div>
+                        <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleClick}>Add an Exercise</div>
                         {planExercises.map((exercise, index) => {
                             return (
                                 <ExerciseInput 
@@ -77,8 +51,8 @@ const Create: React.FC = () => {
                                     id={index} 
                                     name={exercise.name} 
                                     muscleGroup={exercise.muscleGrouping}
-                                    handleChange={updateExerciseData}
-                                    handleRemove={removeExerciseHandler}
+                                    handleChange={mutateExerciseData}
+                                    handleRemove={removeExercise}
                                 />
                             )
                         })}

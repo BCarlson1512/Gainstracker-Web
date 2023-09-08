@@ -3,18 +3,20 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import DashNav from "~/components/dash/DashNav";
 import ExerciseInput from "~/components/dash/ExerciseInput";
-import type Exercise from "~/types/Exercise";
+import { useExercises } from "~/hooks/useExercises";
+import type TrainingPlan from "~/types/TrainingPlan";
 import { api } from "~/utils/api";
 
 const Edit: React.FC = () => {
     {/*TODO: 
         Validate form
-        Fetch TP data from API initially
     */}
     const [planName, setPlanName] = useState<string>("");
-    const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
-    
-    const {mutate} = api.trainingPlan.createTrainingPlan.useMutation({
+    const [currentPlan, setCurrentPlan] = useState<TrainingPlan|undefined>(undefined);
+    const {planExercises, removeExercise, handleClick, mutateExerciseData} = useExercises();
+    const userTrainingPlans = api.trainingPlan.getAll.useQuery(); //TODO: Change this to getByUserID once auth has been setup
+
+    const {mutate} = api.trainingPlan.updateTrainingPlan.useMutation({
         onSuccess: () => {
             toast.success("Successfully updated training plan!")
         },
@@ -25,30 +27,16 @@ const Edit: React.FC = () => {
 
     const handleSubmit = (e:React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        mutate({name:planName, author: "1", exercises: planExercises})
+        mutate({id: currentPlan?.id, name:planName, exercises: planExercises, authorId: "1"})
     }
 
-    const removeExerciseHandler = (index:number) => {
-        const copyArr = [...planExercises]
-        copyArr.splice(index,1)
-        setPlanExercises(copyArr)
-    }
-
-    const handleExerciseClick = () => {
-        const newExercise:Exercise = {name: "", muscleGrouping: "", numOfSets: 0}
-        setPlanExercises([...planExercises, newExercise])
-    }
-
-    const updateExerciseData = (index:number, name:string|null, mg:string|null, sets?:number) => {
-        const exercises = [...planExercises]
-        const exercise = exercises.find((exerc, i) => index === i)
-        if (exercise) {
-            name ? exercise.name = name : null;
-            mg ? exercise.muscleGrouping = mg : null;
-            sets ? exercise.numOfSets = sets : null;
+    const handleChange = (id:string) => {
+        const currPlan = userTrainingPlans.data?.find((plan) => plan.id === id)
+        setCurrentPlan(currPlan);
+        if (currPlan) { // populate plan data 
+            setPlanName(currPlan.name);
         }
-        setPlanExercises(exercises)
-        console.log(planExercises)
+        console.log(currPlan?.exercises)
     }
 
     return(
@@ -61,28 +49,40 @@ const Edit: React.FC = () => {
                 <div className="flex justify-center items-center py-8">
                     <h1 className="text-white font-bold text-3xl drop-shadow-sm">Modify Training Plan</h1>
                 </div>
-                <div>
-                    <form className="flex flex-col justify-center" onSubmit={(e) =>{handleSubmit(e)}}>
-                        <div>
-                            <label htmlFor="name" className="text-white px-2 mx-2">Plan name:</label>
-                            <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" onBlur={(e) => setPlanName(e.target.value)} />
-                        </div>
-                        <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleExerciseClick}>Add an Exercise</div>
-                        {planExercises.map((exercise, index) => {
-                            return (
-                                <ExerciseInput 
-                                    key={index} 
-                                    id={index} 
-                                    name={exercise.name} 
-                                    muscleGroup={exercise.muscleGrouping}
-                                    handleChange={updateExerciseData}
-                                    handleRemove={removeExerciseHandler}
-                                />
-                            )
-                        })}
-                        <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-[#33096e] hover:border-[#33096e] transition ease-in">Create Training Plan</button>
-                    </form>
+                <div className="flex flex-col items-center">
+                    <h3 className="text-white font-semibold text-2xl drop-shadow-sm">Choose a Training Plan</h3>
+                    <select name="training-plans" id="training-plans" onChange={(e) => handleChange(e.target.value)}>
+                        {userTrainingPlans.data?.map((plan) =>
+                            <option key={plan.id} value={plan.id}>{plan.name}</option>
+                        )}
+                    </select>
                 </div>
+                {currentPlan && (
+                    <div>
+                        <form className="flex flex-col justify-center" onSubmit={(e) =>{handleSubmit(e)}}>
+                            <div>
+                                <label htmlFor="name" className="text-white px-2 mx-2">Plan name:</label>
+                                <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" value={planName} onChange={(e) => setPlanName(e.target.value)} />
+                            </div>
+                            <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleClick}>Add an Exercise</div>
+                            {currentPlan.exercises?.map((exercise, index) => {
+                                return (
+                                    <ExerciseInput 
+                                        key={index}
+                                        id={index} 
+                                        name={exercise.name}
+                                        data={exercise}
+                                        muscleGroup={exercise.muscleGrouping}
+                                        handleChange={mutateExerciseData}
+                                        handleRemove={removeExercise}
+                                    />
+                                )
+                            })}
+                            <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-[#33096e] hover:border-[#33096e] transition ease-in">Create Training Plan</button>
+                        </form>
+                    </div>
+                    )
+                }
             </main>
         </>
     )
