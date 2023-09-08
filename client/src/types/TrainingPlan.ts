@@ -1,9 +1,11 @@
 import type Exercise from "./Exercise";
 
 type TrainingPlan = {
-    date: string,
+    dateCreated?: Date,
+    id?: string,
+    authorId?: string,
     name: string,
-    exercises: Exercise[]
+    exercises?: Exercise[]
 }
 
 export default TrainingPlan;

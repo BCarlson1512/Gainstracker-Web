@@ -12,8 +12,8 @@ const Edit: React.FC = () => {
         Validate form
     */}
     const [planName, setPlanName] = useState<string>("");
-    const [currentPlan, setCurrentPlan] = useState<TrainingPlan|null>(null);
-    const {planExercises, removeExercise, mutateExerciseData} = useExercises();
+    const [currentPlan, setCurrentPlan] = useState<TrainingPlan|undefined>(undefined);
+    const {planExercises, removeExercise, handleClick, mutateExerciseData} = useExercises();
     
     const userTrainingPlans = api.trainingPlan.getAll.useQuery(); //TODO: Change this to getByUserID once auth has been setup
 
@@ -31,6 +31,11 @@ const Edit: React.FC = () => {
         mutate({name:planName, exercises: planExercises, id: "1"})
     }
 
+    const handleChange = (id:string) => {
+        const currPlan = userTrainingPlans.data?.find((plan) => plan.id === id)
+        setCurrentPlan(currPlan);
+    }
+
     return(
         <>
             <Head>
@@ -43,7 +48,7 @@ const Edit: React.FC = () => {
                 </div>
                 <div className="flex flex-col items-center">
                     <h3 className="text-white font-semibold text-2xl drop-shadow-sm">Choose a Training Plan</h3>
-                    <select name="training-plans" id="training-plans">
+                    <select name="training-plans" id="training-plans" onChange={(e) => handleChange(e.target.value)}>
                         {userTrainingPlans.data?.map((plan) =>
                             <option key={plan.id} value={plan.id}>{plan.name}</option>
                         )}
@@ -56,11 +61,11 @@ const Edit: React.FC = () => {
                                 <label htmlFor="name" className="text-white px-2 mx-2">Plan name:</label>
                                 <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" onBlur={(e) => setPlanName(e.target.value)} />
                             </div>
-                            <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleExerciseClick}>Add an Exercise</div>
+                            <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleClick}>Add an Exercise</div>
                             {planExercises.map((exercise, index) => {
                                 return (
                                     <ExerciseInput 
-                                        key={index} 
+                                        key={index}
                                         id={index} 
                                         name={exercise.name} 
                                         muscleGroup={exercise.muscleGrouping}
