@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import DashNav from "~/components/dash/DashNav";
 import ExerciseInput from "~/components/dash/ExerciseInput";
@@ -14,7 +14,7 @@ const Edit: React.FC = () => {
     const [planName, setPlanName] = useState<string>("");
     const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
     const [currentPlan, setCurrentPlan] = useState<TrainingPlan|undefined>(undefined);
-    const userTrainingPlans = api.trainingPlan.getAll.useQuery(); //TODO: Change this to getByUserID once auth has been setup
+    const userTrainingPlans = api.trainingPlan.getAll.useQuery() //TODO: Change this to getByUserID once auth has been setup
 
     const {mutate} = api.trainingPlan.updateTrainingPlan.useMutation({
         onSuccess: () => {
@@ -50,9 +50,6 @@ const Edit: React.FC = () => {
         setPlanExercises([...planExercises, newExercise])
     }
 
-    useEffect(() => {
-    }, [planExercises])
-
     return(
         <>
             <Head>
@@ -65,7 +62,8 @@ const Edit: React.FC = () => {
                 </div>
                 <div className="flex flex-col items-center">
                     <h3 className="text-white font-semibold text-2xl drop-shadow-sm">Choose a Training Plan</h3>
-                    <select name="training-plans" id="training-plans" onChange={(e) => handleSubmitChange(e.target.value)}>
+                    <select name="training-plans" id="training-plans" onChange={(e) => handleSubmitChange(e.target.value)} defaultValue={"default"}>
+                        <option disabled key="default" value="default">Select a Training Plan</option>
                         {userTrainingPlans.data?.map((plan) =>
                             <option key={plan.id} value={plan.id}>{plan.name}</option>
                         )}
