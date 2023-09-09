@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import DashNav from "~/components/dash/DashNav";
 import ExerciseInput from "~/components/dash/ExerciseInput";
-import { useExercises } from "~/hooks/useExercises";
+import type Exercise from "~/types/Exercise";
 import { api } from "~/utils/api";
 
 const Create: React.FC = () => {
@@ -11,7 +11,7 @@ const Create: React.FC = () => {
         Validate form
     */}
     const [planName, setPlanName] = useState<string>("");
-    const {planExercises, removeExercise, handleClick, mutateExerciseData} = useExercises();
+    const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
 
     const {mutate} = api.trainingPlan.createTrainingPlan.useMutation({
         onSuccess: () => {
@@ -24,8 +24,33 @@ const Create: React.FC = () => {
 
     const handleSubmit = (e:React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        mutate({name:planName, authorId: "1", exercises: planExercises})
+        mutate({name:planName, authorId: "64fbb5b4d74b6cb16f78fbe3", exercises: planExercises})
     }
+
+    const removeExercise = (index: number) => {
+        const copyArr = [...planExercises]
+        copyArr.splice(index,1)
+        setPlanExercises(copyArr)
+    }
+
+    const handleClick = () => {
+        const newExercise:Exercise = {name: "", muscleGrouping: "", numOfSets: 0}
+        setPlanExercises([...planExercises, newExercise])
+    }
+
+    const mutateExerciseData = (index:number, name:string|null, mg:string|null, sets?:number) => {
+        const exercises = [...planExercises]
+        const exercise = exercises.find((exerc, i) => index === i)
+        if (exercise) {
+            name ? exercise.name = name : null;
+            mg ? exercise.muscleGrouping = mg : null;
+            sets ? exercise.numOfSets = sets : null;
+        }
+        setPlanExercises(exercises)
+    }
+
+    useEffect(() => {
+    }, [planExercises])
 
     return(
         <>
@@ -49,7 +74,8 @@ const Create: React.FC = () => {
                                 <ExerciseInput 
                                     key={index} 
                                     id={index} 
-                                    name={exercise.name} 
+                                    name={exercise.name}
+                                    data={exercise}
                                     muscleGroup={exercise.muscleGrouping}
                                     handleChange={mutateExerciseData}
                                     handleRemove={removeExercise}
