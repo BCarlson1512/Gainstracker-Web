@@ -60,9 +60,9 @@ const Edit: React.FC = () => {
                 <div className="flex justify-center items-center py-8">
                     <h1 className="text-white font-bold text-3xl drop-shadow-sm">Modify Training Plan</h1>
                 </div>
-                <div className="flex flex-col items-center">
-                    <h3 className="text-white font-semibold text-2xl drop-shadow-sm">Choose a Training Plan</h3>
-                    <select name="training-plans" id="training-plans" onChange={(e) => handleSubmitChange(e.target.value)} defaultValue={"default"}>
+                <div className="flex flex-col items-center py-2">
+                    <h3 className="text-white font-semibold text-2xl drop-shadow-sm py-2">Choose a Training Plan</h3>
+                    <select className="p-2 rounded-md" name="training-plans" id="training-plans" onChange={(e) => handleSubmitChange(e.target.value)} defaultValue={"default"}>
                         <option disabled key="default" value="default">Select a Training Plan</option>
                         {userTrainingPlans.data?.map((plan) =>
                             <option key={plan.id} value={plan.id}>{plan.name}</option>
@@ -70,7 +70,7 @@ const Edit: React.FC = () => {
                     </select>
                 </div>
                 {currentPlan && (
-                    <div>
+                    <div className="py-4">
                         <form className="flex flex-col justify-center" onSubmit={(e) =>{handleSubmit(e)}}>
                             <div>
                                 <label htmlFor="name" className="text-white px-2 mx-2">Plan name:</label>

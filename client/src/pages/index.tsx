@@ -1,10 +1,10 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { SignInButton, SignOutButton, SignUpButton, useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import Link from "next/link";
-import { api } from "~/utils/api";
 
 const Home: React.FC = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  //TODO: Configure clerk application
+  const user = useUser();
 
   return (
     <>
@@ -17,49 +17,34 @@ const Home: React.FC = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Fitness Tracking Simplified
           </h1>
-          <div>
-            <Link 
-              className="text-white text-2xl p-2 px-4 m-2 border-2 rounded-lg"
-              href="/dash"
-            >
-              Dashboard
-            </Link>
+          <div className="flex">
+            {!user.isSignedIn &&
+              <>
+                <div className="text-white text-2xl p-2 px-4 m-2 border-2 rounded-lg text-center">
+                    <SignInButton />
+                </div>
+                <div className="text-white text-2xl p-2 px-4 m-2 border-2 rounded-lg text-center">
+                    <SignUpButton />
+                </div>
+              </> 
+            }
+            {!!user.isSignedIn &&
+              <>
+                <Link 
+                  className="text-xl text-[#33096e] bg-white font-semibold p-4 m-4 border-2 rounded-lg" 
+                  href="/dash"
+                >
+                  Dashboard
+                </Link>
+                <div className="text-white text-2xl p-2 px-4 m-2 border-2 rounded-lg text-center">
+                  <SignOutButton />
+                </div>
+              </>
+            }
           </div>
-          {/* 
-            <div className="flex flex-col items-center gap-2">
-              <p className="text-2xl text-white">
-                {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-              </p>
-              <AuthShowcase />
-            </div>
-          */}
         </div>
       </main>
     </>
-  );
-}
-
-function AuthShowcase() {
-  const { data: sessionData } = useSession();
-
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        {secretMessage && <span> - {secretMessage}</span>}
-      </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
   );
 }
 
