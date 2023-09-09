@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
   // Further reading:
   // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -15,15 +15,15 @@ datasource db {
 }
 
 model Example {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 // Necessary for Next auth
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
   type              String
   provider          String
   providerAccountId String
@@ -34,21 +34,21 @@ model Account {
   scope             String?
   id_token          String? // @db.Text
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   sessionToken String   @unique
-  userId       String
+  userId       String   @db.ObjectId
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id])
 }
 
 model User {
-  id            String         @id @default(cuid())
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
   email         String?        @unique
   emailVerified DateTime?
@@ -57,36 +57,40 @@ model User {
   accounts      Account[]
   sessions      Session[]
   trainingPlans  TrainingPlan[]
+  sets          Set[]
 }
 
 model TrainingPlan {
-  id          String     @id @default(cuid())
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   dateCreated DateTime   @default(now())
   name        String
   exercises   Exercise[]
   author      User       @relation(fields: [authorId], references: [id])
-  authorId    String
+  authorId    String     @db.ObjectId
 }
 
 model Exercise {
-  id             String       @id @default(cuid())
-  name           String
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  name           String       @unique
   muscleGrouping String
   sets           Set[]
   belongsTo      TrainingPlan @relation(fields: [trainingId], references: [id])
-  trainingId           String
+  trainingId     String @db.ObjectId
 }
 
 model Set {
-  id         String   @id @default(cuid())
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdBy  User @relation(fields: [userId], references: [id])
   belongsTo  Exercise @relation(fields: [exerciseId], references: [id])
-  exerciseId String
+  exerciseId String @db.ObjectId
+  userId     String @db.ObjectId
   weight     Float
   reps       Int
   unit       String?
 }
 
 model VerificationToken {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
   identifier String
   token      String   @unique
   expires    DateTime

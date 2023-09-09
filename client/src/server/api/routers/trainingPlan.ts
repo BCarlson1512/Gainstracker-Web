@@ -3,16 +3,18 @@ import { z } from "zod";
 import { prisma } from "~/server/db";
 import { populateExercise } from "~/utils/exercises/exercises";
 
-const exerciseSchema = z.object({
-    id: z.optional(z.string()),
-    name: z.string(),
-    muscleGrouping: z.string(),
-})
+const exerciseSchema = z
+.array(
+    z.object({
+        name: z.string(),
+        muscleGrouping: z.string(),
+    }
+))
 
 const trainingPlanSchema = z.object({
     id: z.optional(z.string()),
     name: z.string(),
-    exercises: z.array(exerciseSchema),
+    exercises: exerciseSchema,
     authorId: z.string()
 })
 
@@ -62,20 +64,13 @@ export const trainingPlanRouter = createTRPCRouter({
             data: {
                 name: name,
                 authorId: authorId,
+                exercises:{ 
+                    createMany:{
+                        data: exercises
+                    }
+                }
             }
         });
-        console.log(createdTrainingPlan);
-        if (createdTrainingPlan.id && exercises) {
-            populateExercise(exercises, createdTrainingPlan.id)
-            return await prisma.trainingPlan.update({
-                where: {id: createdTrainingPlan.id},
-                data: {
-                    name: name,
-                    authorId: authorId,
-                    exercises: exercises
-                }
-            })
-        }
         return createdTrainingPlan;
     }),
     deleteTrainingPlan: publicProcedure
@@ -94,15 +89,19 @@ export const trainingPlanRouter = createTRPCRouter({
     .input(trainingPlanSchema)
     .mutation(async({ctx, input}) => {
         const {id, exercises, name} = input;
-        populateExercise(exercises, id)
         const trainingPlan = await prisma.trainingPlan.update({
             where: {
                 id: id,
             },
             data: {
                 name: name,
-                exercises: exercises,
-            }
+                exercises: {
+                    createMany: {
+                        data: exercises, 
+                    }
+                }
+            },
+            include: {exercises: true}
         })
         return trainingPlan;
     }),

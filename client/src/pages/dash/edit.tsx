@@ -1,9 +1,9 @@
 import Head from "next/head";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import DashNav from "~/components/dash/DashNav";
 import ExerciseInput from "~/components/dash/ExerciseInput";
-import { useExercises } from "~/hooks/useExercises";
+import type Exercise from "~/types/Exercise";
 import type TrainingPlan from "~/types/TrainingPlan";
 import { api } from "~/utils/api";
 
@@ -12,8 +12,8 @@ const Edit: React.FC = () => {
         Validate form
     */}
     const [planName, setPlanName] = useState<string>("");
+    const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
     const [currentPlan, setCurrentPlan] = useState<TrainingPlan|undefined>(undefined);
-    const {planExercises, removeExercise, handleClick, mutateExerciseData} = useExercises();
     const userTrainingPlans = api.trainingPlan.getAll.useQuery(); //TODO: Change this to getByUserID once auth has been setup
 
     const {mutate} = api.trainingPlan.updateTrainingPlan.useMutation({
@@ -30,14 +30,28 @@ const Edit: React.FC = () => {
         mutate({id: currentPlan?.id, name:planName, exercises: planExercises, authorId: "1"})
     }
 
-    const handleChange = (id:string) => {
+    const handleSubmitChange = (id:string) => {
         const currPlan = userTrainingPlans.data?.find((plan) => plan.id === id)
         setCurrentPlan(currPlan);
         if (currPlan) { // populate plan data 
             setPlanName(currPlan.name);
+            setPlanExercises(currPlan.exercises)
         }
-        console.log(currPlan?.exercises)
     }
+
+    const removeExercise = (index: number) => {
+        const copyArr = [...planExercises]
+        copyArr.splice(index,1)
+        setPlanExercises(copyArr)
+    }
+
+    const handleClick = () => {
+        const newExercise:Exercise = {name: "", muscleGrouping: "", numOfSets: 0}
+        setPlanExercises([...planExercises, newExercise])
+    }
+
+    useEffect(() => {
+    }, [planExercises])
 
     return(
         <>
@@ -51,7 +65,7 @@ const Edit: React.FC = () => {
                 </div>
                 <div className="flex flex-col items-center">
                     <h3 className="text-white font-semibold text-2xl drop-shadow-sm">Choose a Training Plan</h3>
-                    <select name="training-plans" id="training-plans" onChange={(e) => handleChange(e.target.value)}>
+                    <select name="training-plans" id="training-plans" onChange={(e) => handleSubmitChange(e.target.value)}>
                         {userTrainingPlans.data?.map((plan) =>
                             <option key={plan.id} value={plan.id}>{plan.name}</option>
                         )}
@@ -65,7 +79,7 @@ const Edit: React.FC = () => {
                                 <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" value={planName} onChange={(e) => setPlanName(e.target.value)} />
                             </div>
                             <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleClick}>Add an Exercise</div>
-                            {currentPlan.exercises?.map((exercise, index) => {
+                            {planExercises.map((exercise, index) => {
                                 return (
                                     <ExerciseInput 
                                         key={index}
@@ -73,12 +87,12 @@ const Edit: React.FC = () => {
                                         name={exercise.name}
                                         data={exercise}
                                         muscleGroup={exercise.muscleGrouping}
-                                        handleChange={mutateExerciseData}
+                                        handleChange={handleClick}
                                         handleRemove={removeExercise}
                                     />
                                 )
                             })}
-                            <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-[#33096e] hover:border-[#33096e] transition ease-in">Create Training Plan</button>
+                            <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-[#33096e] hover:border-[#33096e] transition ease-in">Update Training Plan</button>
                         </form>
                     </div>
                     )
