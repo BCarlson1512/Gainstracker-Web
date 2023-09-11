@@ -3,12 +3,12 @@
 ## Roadmap (AKA: A long todo list)
 
 - Design UI
-  - Create Workouts
+  - ~~Create Workouts~~
   - Log Workouts
   - View Workouts
   - User Statistics
-- Design API
-- Settle on DB for project
+- ~~Design API~~
+- ~~Settle on DB for project~~
 - Determine cloud deployment (AWS/GCP)
 
 ## The Why
@@ -45,6 +45,14 @@
 ### ChartJS
 
 - There's still not a great wrapper used for D3 and react, so for any sort of graphing/charting of data this is my go to library
+
+### Clerk
+
+- Authentication made simple
+
+### MongoDB
+
+- Prefer a flexible schema for a project like this, rather than making tons of RDBMS changes
 
 ## Contributions
 
