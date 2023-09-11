@@ -3,12 +3,12 @@
 ## Roadmap (AKA: A long todo list)
 
 - Design UI
-  - Create Workouts
+  - ~~Create Workouts~~
   - Log Workouts
   - View Workouts
   - User Statistics
-- Design API
-- Settle on DB for project
+- ~~Design API~~
+- ~~Settle on DB for project~~
 - Determine cloud deployment (AWS/GCP)
 
 ## The Why
