@@ -3,11 +3,12 @@ import Link from "next/link";
 import ChartsCard from "~/components/dash/ChartsCard";
 import DashNav from "~/components/dash/DashNav";
 import StatsCard from "~/components/dash/StatsCard";
-import UserCard from "~/components/user/UserCard";
-import {BiExit} from 'react-icons/bi'
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 
-const dash: React.FC = (props) => {
+const Dash: React.FC = (props) => {
+
+    const {user} = useUser();
+    console.log(user)
     return(
         <>
             <Head>
@@ -73,4 +74,4 @@ const dash: React.FC = (props) => {
     )
 }
 
-export default dash;
+export default Dash;
