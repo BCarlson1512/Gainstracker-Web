@@ -14,21 +14,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id            String         @id @default(auto()) @map("_id") @db.ObjectId
-  name          String         @unique
-  dateJoined    DateTime       @default(now())
-  trainingPlans  TrainingPlan[]
-  sets          Set[]
-}
-
 model TrainingPlan {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
   dateCreated DateTime   @default(now())
   name        String
   exercises   Exercise[]
-  author      User       @relation(fields: [authorId], references: [id])
-  authorId    String     @db.ObjectId
+  author      String // clerk user id
+  authorId    String
 }
 
 model Exercise {
@@ -42,10 +34,10 @@ model Exercise {
 
 model Set {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdBy  User @relation(fields: [userId], references: [id])
+  createdBy  String // refers to clerk user id
   belongsTo  Exercise @relation(fields: [exerciseId], references: [id])
   exerciseId String @db.ObjectId
-  userId     String @db.ObjectId
+  userId     String
   weight     Float
   reps       Int
   unit       String?
