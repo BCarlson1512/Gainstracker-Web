@@ -46,6 +46,14 @@
 
 - There's still not a great wrapper used for D3 and react, so for any sort of graphing/charting of data this is my go to library
 
+### Clerk
+
+- Authentication made simple
+
+### MongoDB
+
+- Prefer a flexible schema for a project like this, rather than making tons of RDBMS changes
+
 ## Contributions
 
 - See an issue with the app? Make an issue on the respective project (Web/Mobile)
