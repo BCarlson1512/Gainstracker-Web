@@ -3,10 +3,12 @@ import Link from "next/link";
 import ChartsCard from "~/components/dash/ChartsCard";
 import DashNav from "~/components/dash/DashNav";
 import StatsCard from "~/components/dash/StatsCard";
-import UserCard from "~/components/user/UserCard";
-import {BiExit} from 'react-icons/bi'
+import { UserButton, useUser } from "@clerk/nextjs";
 
-const dash: React.FC = (props) => {
+const Dash: React.FC = (props) => {
+
+    const {user} = useUser();
+    console.log(user)
     return(
         <>
             <Head>
@@ -17,9 +19,7 @@ const dash: React.FC = (props) => {
                 <div className="flex w-full flex-col gap-12 px-4 py-16 ">
                     <div className="flex justify-end items-center ml-46">
                         <div className="grid grid-cols-3 gap-4 text-white mr-20">
-                            <UserCard />
-                            <div className="text-xl border-l-2 px-6 text-center">Notifications</div>
-                            <Link className="text-xl text-center" href="/"><BiExit size="28"/></Link>
+                            <UserButton />
                         </div>
                     </div>
                     <div className="flex ml-20 pl-8 w-[90vw] justify-between items-center">
@@ -74,4 +74,4 @@ const dash: React.FC = (props) => {
     )
 }
 
-export default dash;
+export default Dash;

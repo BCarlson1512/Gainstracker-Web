@@ -1,22 +1,7 @@
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
 import { z } from "zod";
 import { prisma } from "~/server/db";
-import { populateExercise } from "~/utils/exercises/exercises";
-
-const exerciseSchema = z
-.array(
-    z.object({
-        name: z.string(),
-        muscleGrouping: z.string(),
-    }
-))
-
-const trainingPlanSchema = z.object({
-    id: z.optional(z.string()),
-    name: z.string(),
-    exercises: exerciseSchema,
-    authorId: z.string()
-})
+import { trainingPlanSchema } from "../schemas/trainingPlan";
 
 export const trainingPlanRouter = createTRPCRouter({
     getAll: publicProcedure
@@ -28,6 +13,20 @@ export const trainingPlanRouter = createTRPCRouter({
             take: 100,
         });
         return trainingPlans;
+    }),
+    getByAuthedUID: protectedProcedure
+    .query(async({ctx}) => {
+        console.log(ctx.userId)
+        const trainingPlan = await prisma.trainingPlan.findMany({
+            where: {
+                authorId: ctx.userId,
+            },
+            include: {
+                exercises: true
+            },
+            take: 100,
+        });
+        return trainingPlan;
     }),
     getByUserID: publicProcedure
     .input(z.string())
@@ -56,14 +55,15 @@ export const trainingPlanRouter = createTRPCRouter({
         })
         return trainingPlan;
     }),
-    createTrainingPlan: publicProcedure
+    createTrainingPlan: protectedProcedure
     .input(trainingPlanSchema)
     .mutation(async({ctx, input}) => {
-        const {name, authorId, exercises} = input
+        const {name, exercises} = input
         const createdTrainingPlan = await prisma.trainingPlan.create({
             data: {
                 name: name,
-                authorId: authorId,
+                authorId: ctx.userId,
+                author: ctx.userId,
                 exercises:{ 
                     createMany:{
                         data: exercises

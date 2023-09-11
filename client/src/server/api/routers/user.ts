@@ -1,59 +1,66 @@
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { z } from 'zod'
 import { prisma } from "~/server/db";
+import  { userSchema, newUserSchema } from "../schemas/user";
 
 export const userRouter = createTRPCRouter({
     getAll: publicProcedure
     .query(async({ctx}) => {
         const users = await prisma.user.findMany({
+            include: {
+                sets: true,
+                trainingPlans: true,
+            },
             take: 100,
         });
         return users;
     }),
     getID: publicProcedure
-    .input(z.string())
+    .input(
+        z.object({
+            id: z.string()
+        })
+        )
     .query(async({ctx, input}) => {
+        const {id} = input
         const user = await prisma.user.findFirst({
             where: {
-                id: input,
+                id: id,
+            },
+            include: {
+                sets: true,
+                trainingPlans: true,
             },
         });
         return user;
     }),
     createUser: publicProcedure
-    .input(z.object({ //TODO: Update with additional user data
-        name: z.string(),
-        profileUrl: z.string(),
-        email: z.string(),
-
-    }))
+    .input(newUserSchema)
     .mutation(async({ctx, input}) => {
         const user = await prisma.user.create({
             data: {
                 name: input.name,
-                image: input.profileUrl,
             }
         });
         return user;
     }),
     updateUser: publicProcedure
     .input(
-        z.object({
-            id: z.string(),
-            name: z.string(),
-            email: z.string(),
-            image: z.string(),
-        })
+        userSchema
     )
     .mutation(async({ctx, input}) => {
-        const user = await prisma.user.update({
+        const {name, trainingPlans, sets} = input
+        const user = await prisma.user.update({ //TODO: handle updating user sets
             where: {
-                id: input.id,
+                name: name
             },
             data: {
                 name: input.name,
-                email: input.email,
-                image: input.image
+                trainingPlans: {
+                    createMany: {
+                        data: trainingPlans
+                    }
+                },
             }
         })
         return user;

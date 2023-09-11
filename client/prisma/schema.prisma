@@ -14,59 +14,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Example {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// Necessary for Next auth
-model Account {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId            String  @db.ObjectId
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? // @db.Text
-  access_token      String? // @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? // @db.Text
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id])
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  sessionToken String   @unique
-  userId       String   @db.ObjectId
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id])
-}
-
-model User {
-  id            String         @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?        @unique
-  emailVerified DateTime?
-  image         String
-  dateJoined    DateTime       @default(now())
-  accounts      Account[]
-  sessions      Session[]
-  trainingPlans  TrainingPlan[]
-  sets          Set[]
-}
-
 model TrainingPlan {
   id          String     @id @default(auto()) @map("_id") @db.ObjectId
   dateCreated DateTime   @default(now())
   name        String
   exercises   Exercise[]
-  author      User       @relation(fields: [authorId], references: [id])
-  authorId    String     @db.ObjectId
+  author      String // clerk user id
+  authorId    String
 }
 
 model Exercise {
@@ -80,20 +34,11 @@ model Exercise {
 
 model Set {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdBy  User @relation(fields: [userId], references: [id])
+  createdBy  String // refers to clerk user id
   belongsTo  Exercise @relation(fields: [exerciseId], references: [id])
   exerciseId String @db.ObjectId
-  userId     String @db.ObjectId
+  userId     String
   weight     Float
   reps       Int
   unit       String?
-}
-
-model VerificationToken {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
 }
