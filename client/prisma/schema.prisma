@@ -27,6 +27,7 @@ model Exercise {
   id             String       @id @default(auto()) @map("_id") @db.ObjectId
   name           String       @unique
   muscleGrouping String
+  numOfSets       Int @default(0)
   sets           Set[]
   belongsTo      TrainingPlan @relation(fields: [trainingId], references: [id])
   trainingId     String @db.ObjectId
@@ -34,11 +35,11 @@ model Exercise {
 
 model Set {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdBy  String // refers to clerk user id
   belongsTo  Exercise @relation(fields: [exerciseId], references: [id])
   exerciseId String @db.ObjectId
   userId     String
   weight     Float
   reps       Int
-  unit       String?
+  unit       String @default("lbs")
+  notes      String?
 }

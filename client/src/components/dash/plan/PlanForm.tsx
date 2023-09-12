@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { api } from "~/utils/api";
 import ExerciseInput from "../ExerciseInput";
 import type TrainingPlan from "~/types/TrainingPlan";
+import { PlanSelect } from "./PlanSelect";
 
 interface PlanFormProps {
     userId: string
@@ -16,14 +17,18 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
     */}
     const [planName, setPlanName] = useState<string>("");
     const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
+    const [removedExercises, setRemovedExercises] = useState<string[]>([]);
     const [currentPlan, setCurrentPlan] = useState<TrainingPlan|undefined>(undefined);
-    const {isCreateMode, userId} = props;
+    const {isCreateMode} = props;
 
     const userTrainingPlans = api.trainingPlan.getByAuthedUID.useQuery();
 
-    const {mutate} = isCreateMode ? api.trainingPlan.createTrainingPlan.useMutation({
+    const {mutate} = isCreateMode ? 
+    api.trainingPlan.createTrainingPlan.useMutation({
         onSuccess: () => {
             toast.success("Successfully created training plan!")
+            setPlanName("");
+            setPlanExercises([]);
         },
         onError: () => {
             toast.error("Failed to create training plan")
@@ -33,29 +38,46 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
     api.trainingPlan.updateTrainingPlan.useMutation({
         onSuccess: () => {
             toast.success("Successfully updated training plan!")
+            setPlanName("");
+            setPlanExercises([]);
+            setCurrentPlan(undefined)
         },
         onError: () => {
             toast.error("Failed to update training plan")
         }
     });
 
+    const deleteExercises = api.trainingPlan.deleteTrainingPlanExercises.useMutation({
+        onSuccess: () => {
+            toast.success("Successfully removed exercises!");
+            setRemovedExercises([])
+        },
+        onError: () => {
+            toast.error("Failed to remove exercises!")
+        }
+    })
+
     const handleSubmit = (e:React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        isCreateMode ? 
-            mutate({name:planName, exercises: planExercises})
-        :
+        if (isCreateMode) {
+            mutate({name:planName, id: "", exercises: planExercises})
+        } else {
             mutate({id: currentPlan?.id, name:planName, exercises: planExercises})
+            deleteExercises.mutate({removedExerciseIds: removedExercises})
+        }            
     }
 
     const removeExercise = (index: number) => {
         const copyArr = [...planExercises]
-        copyArr.splice(index,1)
+        const removedExercise = copyArr.splice(index,1)[0]
+        !isCreateMode && removedExercise?.id ? setRemovedExercises([...removedExercises, removedExercise.id]) : null
         setPlanExercises(copyArr)
     }
 
     const handleClick = () => {
         const newExercise:Exercise = {name: "", muscleGrouping: "", numOfSets: 0}
         setPlanExercises([...planExercises, newExercise])
+        console.log(planExercises);
     }
 
     const mutateExerciseData = (index:number, name:string|null, mg:string|null, sets?:number) => {
@@ -71,15 +93,16 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
 
     const handleSubmitChange = (id:string) => {
         const currPlan = userTrainingPlans.data?.find((plan) => plan.id === id)
-        setCurrentPlan(currPlan);
+
         if (currPlan) { // populate plan data 
             setPlanName(currPlan.name);
             setPlanExercises(currPlan.exercises)
+            setCurrentPlan(currPlan);
         }
     }
 
     useEffect(() => {
-    }, [planExercises])
+    },[currentPlan])
 
     return (
         <div className="flex flex-col">
@@ -87,20 +110,12 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
                 <h1 className="text-white font-bold text-3xl drop-shadow-sm">{isCreateMode ? "Create a New" : "Update"} Training Plan</h1>
             </div>
             {!isCreateMode && (
-                <div className="flex flex-col items-center py-2">
-                    <h3 className="text-white font-semibold text-2xl drop-shadow-sm py-2">Choose a Training Plan</h3>
-                    <select className="p-2 rounded-md" name="training-plans" id="training-plans" onChange={(e) => handleSubmitChange(e.target.value)} defaultValue={"default"}>
-                        <option disabled key="default" value="default">Select a Training Plan</option>
-                        {userTrainingPlans.data?.map((plan) =>
-                            <option key={plan.id} value={plan.id}>{plan.name}</option>
-                        )}
-                    </select>
-                </div>
+                <PlanSelect trainingPlans={userTrainingPlans.data} handleChange={handleSubmitChange} />
             )}
             <form className="flex flex-col justify-center" onSubmit={(e) =>{handleSubmit(e)}}>
                 <div>
                     <label htmlFor="name" className="text-white px-2 mx-2">Plan name:</label>
-                    <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" onBlur={(e) => setPlanName(e.target.value)} />
+                    <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" defaultValue={planName} onBlur={(e) => setPlanName(e.target.value)} />
                 </div>
                 <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleClick}>Add an Exercise</div>
                 {planExercises.map((exercise, index) => {

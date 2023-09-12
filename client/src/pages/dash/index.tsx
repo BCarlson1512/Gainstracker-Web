@@ -3,12 +3,10 @@ import Link from "next/link";
 import ChartsCard from "~/components/dash/ChartsCard";
 import DashNav from "~/components/dash/DashNav";
 import StatsCard from "~/components/dash/StatsCard";
-import { UserButton, useUser } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 
 const Dash: React.FC = (props) => {
 
-    const {user} = useUser();
-    console.log(user)
     return(
         <>
             <Head>
