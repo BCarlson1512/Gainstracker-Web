@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { api } from "~/utils/api";
 import ExerciseInput from "../ExerciseInput";
 import type TrainingPlan from "~/types/TrainingPlan";
+import { PlanSelect } from "./PlanSelect";
 
 interface PlanFormProps {
     userId: string
@@ -84,15 +85,7 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
                 <h1 className="text-white font-bold text-3xl drop-shadow-sm">{isCreateMode ? "Create a New" : "Update"} Training Plan</h1>
             </div>
             {!isCreateMode && (
-                <div className="flex flex-col items-center py-2">
-                    <h3 className="text-white font-semibold text-2xl drop-shadow-sm py-2">Choose a Training Plan</h3>
-                    <select className="p-2 rounded-md" name="training-plans" id="training-plans" onChange={(e) => handleSubmitChange(e.target.value)} defaultValue={"default"}>
-                        <option disabled key="default" value="default">Select a Training Plan</option>
-                        {userTrainingPlans.data?.map((plan) =>
-                            <option key={plan.id} value={plan.id}>{plan.name}</option>
-                        )}
-                    </select>
-                </div>
+                <PlanSelect trainingPlans={userTrainingPlans.data} handleChange={handleSubmitChange} />
             )}
             <form className="flex flex-col justify-center" onSubmit={(e) =>{handleSubmit(e)}}>
                 <div>
