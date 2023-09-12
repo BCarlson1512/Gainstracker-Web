@@ -35,11 +35,10 @@ model Exercise {
 
 model Set {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdBy  String // refers to clerk user id
   belongsTo  Exercise @relation(fields: [exerciseId], references: [id])
   exerciseId String @db.ObjectId
   userId     String
   weight     Float
   reps       Int
-  unit       String?
+  unit       String @default("lbs")
 }
