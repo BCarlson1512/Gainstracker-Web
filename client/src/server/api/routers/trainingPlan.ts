@@ -16,7 +16,6 @@ export const trainingPlanRouter = createTRPCRouter({
     }),
     getByAuthedUID: protectedProcedure
     .query(async({ctx}) => {
-        console.log(ctx.userId)
         const trainingPlan = await prisma.trainingPlan.findMany({
             where: {
                 authorId: ctx.userId,
@@ -85,7 +84,7 @@ export const trainingPlanRouter = createTRPCRouter({
         });
         return deletedTrainingPlan;
     }),
-    updateTrainingPlan: publicProcedure
+    updateTrainingPlan: protectedProcedure
     .input(trainingPlanSchema)
     .mutation(async({ctx, input}) => {
         const {id, exercises, name} = input;
@@ -95,13 +94,27 @@ export const trainingPlanRouter = createTRPCRouter({
             },
             data: {
                 name: name,
-                exercises: {
-                    createMany: {
-                        data: exercises, 
-                    }
-                }
             },
-            include: {exercises: true}
+        })
+        const dbExercises = []
+        exercises.map(async (exercise) => {
+            const dbExercise = await prisma.exercise.upsert({
+                where: {
+                    trainingId: id,
+                    id: exercise.id,
+                    name: exercise.name
+                },
+                update: {
+                    name: exercise.name,
+                    muscleGrouping: exercise.muscleGrouping
+                },
+                create: {
+                    name: exercise.name,
+                    muscleGrouping: exercise.muscleGrouping,
+                    trainingId: id
+                }
+            })
+            dbExercises.push(dbExercise);
         })
         return trainingPlan;
     }),
