@@ -6,5 +6,6 @@ export const exerciseSchema = z
         id: z.optional(z.string()),
         name: z.string(),
         muscleGrouping: z.string(),
+        numOfSets: z.number(),
     }
 ));

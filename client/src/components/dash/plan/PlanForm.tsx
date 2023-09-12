@@ -25,6 +25,8 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
     const {mutate} = isCreateMode ? api.trainingPlan.createTrainingPlan.useMutation({
         onSuccess: () => {
             toast.success("Successfully created training plan!")
+            setPlanName("");
+            setPlanExercises([]);
         },
         onError: () => {
             toast.error("Failed to create training plan")
@@ -34,6 +36,9 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
     api.trainingPlan.updateTrainingPlan.useMutation({
         onSuccess: () => {
             toast.success("Successfully updated training plan!")
+            setPlanName("");
+            setPlanExercises([]);
+            setCurrentPlan(undefined)
         },
         onError: () => {
             toast.error("Failed to update training plan")
@@ -57,6 +62,7 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
     const handleClick = () => {
         const newExercise:Exercise = {name: "", muscleGrouping: "", numOfSets: 0}
         setPlanExercises([...planExercises, newExercise])
+        console.log(planExercises);
     }
 
     const mutateExerciseData = (index:number, name:string|null, mg:string|null, sets?:number) => {

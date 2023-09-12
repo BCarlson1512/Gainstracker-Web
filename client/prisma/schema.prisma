@@ -27,6 +27,7 @@ model Exercise {
   id             String       @id @default(auto()) @map("_id") @db.ObjectId
   name           String       @unique
   muscleGrouping String
+  numOfSets       Int @default(0)
   sets           Set[]
   belongsTo      TrainingPlan @relation(fields: [trainingId], references: [id])
   trainingId     String @db.ObjectId

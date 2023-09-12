@@ -106,11 +106,13 @@ export const trainingPlanRouter = createTRPCRouter({
                 },
                 update: {
                     name: exercise.name,
-                    muscleGrouping: exercise.muscleGrouping
+                    muscleGrouping: exercise.muscleGrouping,
+                    numOfSets: exercise.numOfSets
                 },
                 create: {
                     name: exercise.name,
                     muscleGrouping: exercise.muscleGrouping,
+                    numOfSets: exercise.numOfSets,
                     trainingId: id
                 }
             })
