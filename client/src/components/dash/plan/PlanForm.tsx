@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type Exercise from "~/types/Exercise"
 import toast from "react-hot-toast";
 import { api } from "~/utils/api";
@@ -17,7 +17,7 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
     const [planName, setPlanName] = useState<string>("");
     const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
     const [currentPlan, setCurrentPlan] = useState<TrainingPlan|undefined>(undefined);
-    const {isCreateMode, userId} = props;
+    const {isCreateMode} = props;
 
     const userTrainingPlans = api.trainingPlan.getByAuthedUID.useQuery();
 
@@ -77,9 +77,6 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
             setPlanExercises(currPlan.exercises)
         }
     }
-
-    useEffect(() => {
-    }, [planExercises])
 
     return (
         <div className="flex flex-col">
