@@ -17,12 +17,14 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
     */}
     const [planName, setPlanName] = useState<string>("");
     const [planExercises, setPlanExercises] = useState<Exercise[]>([]);
+    const [removedExercises, setRemovedExercises] = useState<string[]>([]);
     const [currentPlan, setCurrentPlan] = useState<TrainingPlan|undefined>(undefined);
     const {isCreateMode} = props;
 
     const userTrainingPlans = api.trainingPlan.getByAuthedUID.useQuery();
 
-    const {mutate} = isCreateMode ? api.trainingPlan.createTrainingPlan.useMutation({
+    const {mutate} = isCreateMode ? 
+    api.trainingPlan.createTrainingPlan.useMutation({
         onSuccess: () => {
             toast.success("Successfully created training plan!")
             setPlanName("");
@@ -45,17 +47,30 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
         }
     });
 
+    const deleteExercises = api.trainingPlan.deleteTrainingPlanExercises.useMutation({
+        onSuccess: () => {
+            toast.success("Successfully removed exercises!");
+            setRemovedExercises([])
+        },
+        onError: () => {
+            toast.error("Failed to remove exercises!")
+        }
+    })
+
     const handleSubmit = (e:React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        isCreateMode ? 
+        if (isCreateMode) {
             mutate({name:planName, id: "", exercises: planExercises})
-        :
+        } else {
             mutate({id: currentPlan?.id, name:planName, exercises: planExercises})
+            deleteExercises.mutate({removedExerciseIds: removedExercises})
+        }            
     }
 
     const removeExercise = (index: number) => {
         const copyArr = [...planExercises]
-        copyArr.splice(index,1)
+        const removedExercise = copyArr.splice(index,1)[0]
+        !isCreateMode && removedExercise?.id ? setRemovedExercises([...removedExercises, removedExercise.id]) : null
         setPlanExercises(copyArr)
     }
 

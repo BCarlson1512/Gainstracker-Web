@@ -2,6 +2,7 @@ import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/
 import { z } from "zod";
 import { prisma } from "~/server/db";
 import { trainingPlanSchema } from "../schemas/trainingPlan";
+import { exerciseSchema } from "../schemas/exercise";
 
 export const trainingPlanRouter = createTRPCRouter({
     getAll: publicProcedure
@@ -83,6 +84,21 @@ export const trainingPlanRouter = createTRPCRouter({
             }
         });
         return deletedTrainingPlan;
+    }),
+    deleteTrainingPlanExercises: protectedProcedure
+    .input(z.object({
+            removedExerciseIds: z.array(z.string())
+        }))
+    .mutation (async({ctx, input}) => {
+        const {removedExerciseIds} = input
+        const dbExercisesRemoved = await prisma.exercise.deleteMany({
+            where: {
+                id: {
+                    in: removedExerciseIds
+                }
+            }
+        })
+        return dbExercisesRemoved;
     }),
     updateTrainingPlan: protectedProcedure
     .input(trainingPlanSchema)
