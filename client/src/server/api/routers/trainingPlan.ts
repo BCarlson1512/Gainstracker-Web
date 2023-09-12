@@ -2,6 +2,7 @@ import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/
 import { z } from "zod";
 import { prisma } from "~/server/db";
 import { trainingPlanSchema } from "../schemas/trainingPlan";
+import { upsertExercises } from "~/utils/exercises/exercises";
 
 export const trainingPlanRouter = createTRPCRouter({
     getAll: publicProcedure
@@ -111,28 +112,7 @@ export const trainingPlanRouter = createTRPCRouter({
                 name: name,
             },
         })
-        const dbExercises = []
-        exercises.map(async (exercise) => {
-            const dbExercise = await prisma.exercise.upsert({
-                where: {
-                    trainingId: id,
-                    id: exercise.id,
-                    name: exercise.name
-                },
-                update: {
-                    name: exercise.name,
-                    muscleGrouping: exercise.muscleGrouping,
-                    numOfSets: exercise.numOfSets
-                },
-                create: {
-                    name: exercise.name,
-                    muscleGrouping: exercise.muscleGrouping,
-                    numOfSets: exercise.numOfSets,
-                    trainingId: id
-                }
-            })
-            dbExercises.push(dbExercise);
-        })
+        upsertExercises(exercises, id)
         return trainingPlan;
     }),
 })
