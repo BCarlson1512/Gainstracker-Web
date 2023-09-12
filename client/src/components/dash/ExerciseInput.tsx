@@ -19,11 +19,11 @@ const ExerciseInput: React.FC<ExerciseInputProps> = (props) => {
             </div>
             <div className="flex flex-row justify-between p-1 m-1">
                 <label className="m-1 text-slate-600">Exercise Name:</label>
-                <input className="m-1 text-slate-600 rounded-md border-2 border-slate-600" value={data.name} onChange={(e) => handleChange(id, e.target.value, null)} />
+                <input className="m-1 text-slate-600 rounded-md border-2 border-slate-600" defaultValue={data.name} onChange={(e) => handleChange(id, e.target.value, null)} />
             </div>
             <div className="flex flex-row justify-between p-1 m-1">
                 <label className="m-1 text-slate-600">Muscle Group:</label>
-                <input className="m-1 text-slate-600 rounded-md border-2 border-slate-600" value={data.muscleGrouping} onChange={(e) => handleChange(id, null, e.target.value)} />
+                <input className="m-1 text-slate-600 rounded-md border-2 border-slate-600" defaultValue={data.muscleGrouping} onChange={(e) => handleChange(id, null, e.target.value)} />
             </div>
             <div className="flex flex-row p-1 m-1">
                 <label className="m-1 text-slate-600">Number of Sets:</label>
