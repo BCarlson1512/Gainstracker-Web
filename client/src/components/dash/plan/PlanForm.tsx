@@ -63,8 +63,8 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
             mutate({name:planName, id: "", exercises: planExercises})
         } else {
             mutate({id: currentPlan?.id, name:planName, exercises: planExercises})
-            deleteExercises.mutate({removedExerciseIds: removedExercises})
-        }            
+            removedExercises.length > 0 ? deleteExercises.mutate({removedExerciseIds: removedExercises}) : null
+        }
     }
 
     const removeExercise = (index: number) => {
