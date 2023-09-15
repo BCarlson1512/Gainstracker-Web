@@ -6,7 +6,7 @@ import ExerciseInput from "../ExerciseInput";
 import type TrainingPlan from "~/types/TrainingPlan";
 import { PlanSelect } from "./PlanSelect";
 
-interface PlanFormProps {
+type PlanFormProps = {
     userId: string
     isCreateMode: boolean
 }

@@ -1,6 +1,6 @@
 import type TrainingPlan from "~/types/TrainingPlan"
 
-interface PlanSelectProps {
+type PlanSelectProps = {
     trainingPlans: TrainingPlan[]|undefined
     handleChange: (id: string) => void
 }

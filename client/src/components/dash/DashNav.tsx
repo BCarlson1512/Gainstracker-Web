@@ -21,7 +21,7 @@ const DashNav: React.FC = () => {
     )
 }
 
-interface SideBarIconProps {
+type SideBarIconProps = {
     href: string,
     tooltip?: string,
     icon: any
