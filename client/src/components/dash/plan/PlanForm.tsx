@@ -77,7 +77,6 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
     const handleClick = () => {
         const newExercise:Exercise = {name: "", muscleGrouping: "", numOfSets: 0}
         setPlanExercises([...planExercises, newExercise])
-        console.log(planExercises);
     }
 
     const mutateExerciseData = (index:number, name:string|null, mg:string|null, sets?:number) => {

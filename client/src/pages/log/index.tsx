@@ -6,9 +6,10 @@ import { PlanSelect } from "~/components/dash/plan/PlanSelect";
 import type TrainingPlan from "~/types/TrainingPlan";
 import { api } from "~/utils/api";
 
+import SetsDataProvider from "~/context/SetsContext";
+
 const Log: React.FC = () => {
     {/*TODO: 
-        Allow user to add/remove sets
         Validate weights (No negative weights)
         API: Ship workout off to DB
     */}
@@ -23,7 +24,7 @@ const Log: React.FC = () => {
     }
 
     return (
-        <>
+        <SetsDataProvider>
             <Head>
                 <title>Log a workout</title>
             </Head>
@@ -38,7 +39,8 @@ const Log: React.FC = () => {
                         {selectedPlan?.exercises?.map((exercise, index) => {
                             return(
                             <ExerciseModal 
-                                key={index}
+                                key={exercise.id}
+                                index={index}
                                 exerciseData={exercise}
                             />
                             )
@@ -46,7 +48,7 @@ const Log: React.FC = () => {
                     </div>
                 </div>
             </main>
-        </>
+        </SetsDataProvider>
     )
 }
 export default Log;
