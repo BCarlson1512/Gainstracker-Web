@@ -66,10 +66,6 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
         generateSetsData(exerciseData.numOfSets)
     }, [exerciseData.numOfSets])
 
-    useEffect(() => {
-        console.log(setsData)
-    },[setsData])
-
     return(
         <div className="flex flex-col p-8 m-2 items-center justify-center">
             <div className="text-white">
