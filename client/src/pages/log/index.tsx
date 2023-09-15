@@ -9,7 +9,6 @@ import { api } from "~/utils/api";
 const Log: React.FC = () => {
     {/*TODO: 
         Allow user to add/remove sets
-        Allow user to select KG or LBS for weight
         Validate weights (No negative weights)
         API: Ship workout off to DB
     */}
@@ -39,7 +38,7 @@ const Log: React.FC = () => {
                         {selectedPlan?.exercises?.map((exercise, index) => {
                             return(
                             <ExerciseModal 
-                                key={index} 
+                                key={index}
                                 exerciseData={exercise}
                             />
                             )
