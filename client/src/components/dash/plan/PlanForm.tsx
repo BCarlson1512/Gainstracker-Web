@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type Exercise from "~/types/Exercise"
 import toast from "react-hot-toast";
 import { api } from "~/utils/api";
@@ -101,9 +101,6 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
         }
     }
 
-    useEffect(() => {
-    },[currentPlan])
-
     return (
         <div className="flex flex-col">
             <div className="flex justify-center items-center py-8">
@@ -131,7 +128,7 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
                         />
                     )
                 })}
-                <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-[#33096e] hover:border-[#33096e] transition ease-in">Create Training Plan</button>
+                <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-[#33096e] hover:border-[#33096e] transition ease-in">{isCreateMode? "Create" : "Update"} Training Plan</button>
             </form>
         </div>
     )

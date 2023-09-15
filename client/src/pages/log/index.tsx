@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DashNav from "~/components/dash/DashNav";
 import ExerciseModal from "~/components/dash/ExerciseModal";
 import { PlanSelect } from "~/components/dash/plan/PlanSelect";
@@ -22,9 +22,6 @@ const Log: React.FC = () => {
             setSelectedPlan(currPlan);
         }
     }
-
-    useEffect(() => {
-    },[selectedPlan])
 
     return (
         <>
