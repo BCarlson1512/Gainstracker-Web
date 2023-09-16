@@ -25,6 +25,7 @@ model TrainingPlan {
 model WorkoutLog {
   id              String     @id @default(auto()) @map("_id") @db.ObjectId
   dateCreated     DateTime   @default(now())
+  name            String
   authorId        String // created by clerk user id
   trainingPlanId  String // Follows specific training plan
   sets            Set[]
