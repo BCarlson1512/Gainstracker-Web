@@ -1,5 +1,5 @@
 
-interface ChartsProps {
+type ChartsProps = {
     chartHeading: string,
     chartType?: string,
 }

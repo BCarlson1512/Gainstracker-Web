@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-interface StatsCardProps {
+type StatsCardProps = {
     img?: string,
     statsNum?: number,
     statsMsg?: string,

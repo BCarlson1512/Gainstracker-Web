@@ -63,7 +63,6 @@ export const trainingPlanRouter = createTRPCRouter({
             data: {
                 name: name,
                 authorId: ctx.userId,
-                author: ctx.userId,
                 exercises:{ 
                     createMany:{
                         data: exercises

@@ -3,7 +3,6 @@ import Link from "next/link";
 import ChartsCard from "~/components/dash/ChartsCard";
 import DashNav from "~/components/dash/DashNav";
 import StatsCard from "~/components/dash/StatsCard";
-import { UserButton } from "@clerk/nextjs";
 
 const Dash: React.FC = (props) => {
 
@@ -15,11 +14,6 @@ const Dash: React.FC = (props) => {
             <DashNav />
             <main className="flex min-h-screen w-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
                 <div className="flex w-full flex-col gap-12 px-4 py-16 ">
-                    <div className="flex justify-end items-center ml-46">
-                        <div className="grid grid-cols-3 gap-4 text-white mr-20">
-                            <UserButton />
-                        </div>
-                    </div>
                     <div className="flex ml-20 pl-8 w-[90vw] justify-between items-center">
                         <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-[5rem]"> Dashboard </h1>
                         <div className="flex flex-row justify-center items-center">

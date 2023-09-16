@@ -1,9 +1,9 @@
 type Set = {
     weight: number,
     reps: number,
-    unit: WeightUnit
+    unit: string
+    exerciseId?: string,
+    sid?: string
 }
-
-export type WeightUnit = "lbs" | "kg"
 
 export default Set;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type Exercise from "~/types/Exercise"
 import toast from "react-hot-toast";
 import { api } from "~/utils/api";
@@ -6,7 +6,7 @@ import ExerciseInput from "../ExerciseInput";
 import type TrainingPlan from "~/types/TrainingPlan";
 import { PlanSelect } from "./PlanSelect";
 
-interface PlanFormProps {
+type PlanFormProps = {
     userId: string
     isCreateMode: boolean
 }
@@ -63,8 +63,8 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
             mutate({name:planName, id: "", exercises: planExercises})
         } else {
             mutate({id: currentPlan?.id, name:planName, exercises: planExercises})
-            deleteExercises.mutate({removedExerciseIds: removedExercises})
-        }            
+            removedExercises.length > 0 ? deleteExercises.mutate({removedExerciseIds: removedExercises}) : null
+        }
     }
 
     const removeExercise = (index: number) => {
@@ -77,7 +77,6 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
     const handleClick = () => {
         const newExercise:Exercise = {name: "", muscleGrouping: "", numOfSets: 0}
         setPlanExercises([...planExercises, newExercise])
-        console.log(planExercises);
     }
 
     const mutateExerciseData = (index:number, name:string|null, mg:string|null, sets?:number) => {
@@ -100,9 +99,6 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
             setCurrentPlan(currPlan);
         }
     }
-
-    useEffect(() => {
-    },[currentPlan])
 
     return (
         <div className="flex flex-col">
@@ -131,7 +127,7 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
                         />
                     )
                 })}
-                <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-[#33096e] hover:border-[#33096e] transition ease-in">Create Training Plan</button>
+                <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-[#33096e] hover:border-[#33096e] transition ease-in">{isCreateMode? "Create" : "Update"} Training Plan</button>
             </form>
         </div>
     )
