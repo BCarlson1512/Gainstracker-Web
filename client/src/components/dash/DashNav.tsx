@@ -44,7 +44,7 @@ const SideBarIcon: React.FC<SideBarIconProps> = (props) => {
 const SideBarUserButton: React.FC = (props) => {
     return( 
         <div className="sidebar-icon group">
-            <UserButton />
+            <UserButton  afterSignOutUrl={"/"} />
         </div>
     )
 }

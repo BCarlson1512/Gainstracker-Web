@@ -3,6 +3,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import { ClerkProvider } from "@clerk/nextjs";
+import SetsDataProvider from "~/context/SetsContext";
 
 const MyApp: AppType = ({
   Component,
@@ -10,8 +11,10 @@ const MyApp: AppType = ({
 }) => {
   return (
     <ClerkProvider>
-        <Toaster />
-        <Component {...pageProps} />
+      <SetsDataProvider>
+            <Toaster />
+            <Component {...pageProps} />
+      </SetsDataProvider>
     </ClerkProvider>
   );
 };
