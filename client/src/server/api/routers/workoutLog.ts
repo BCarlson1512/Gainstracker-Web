@@ -4,50 +4,97 @@ import { workoutSchema } from "../schemas/workoutLog";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const workoutLogRouter = createTRPCRouter({
-    getByAuthedUid: protectedProcedure
+    getByAuthedUID: protectedProcedure
     .query(async({ctx}) => {
-        const workouts = await prisma.workoutLog.findMany({
-            where: {
-                authorId: ctx.userId
-            },
-            include: {
-                sets: true
-            },
-            take: 100
-        })
-        return workouts;
+        const {userId} = ctx.auth;
+        try {
+            const workouts = await prisma.workoutLog.findMany({
+                where: {
+                    authorId: userId
+                },
+                include: {
+                    sets: true
+                },
+                take: 100
+            })
+            return {workouts, ctx: ctx};
+        } catch (err) {
+            return {err: err}
+        }
     }),
     getID: protectedProcedure
     .input(z.string())
     .query(async({ctx,input}) => {
-        const workout = await prisma.workoutLog.findFirst({
-            where: {
-                id: input,
-            },
-            include: {
-                sets: true
-            }
-        })
-        return workout;
+        try {
+            const workout = await prisma.workoutLog.findFirst({
+                where: {
+                    id: input,
+                },
+                include: {
+                    sets: true
+                }
+            })
+            return workout;
+        } catch (err) {
+            return {err: err}
+        }
+    }),
+    createLog: protectedProcedure
+    .input(workoutSchema)
+    .mutation(async({ctx, input}) => {
+        const {notes, workoutName, trainingPlanId, sets} = input;
+        const {userId} = ctx.auth
+        console.log(ctx.auth)
+        // undefined property here
+        return {ctx: ctx}
+        const userIdSets = sets.map(set => {return {...set, userId}})
+        try {
+            // context exists until here... where it's getting destroyed
+            const dbLog = await prisma.workoutLog.create({
+                data: {
+                    trainingPlanId,
+                    notes,
+                    name: workoutName,
+                    authorId: userId,
+                    sets: {
+                        createMany: {
+                            data: userIdSets
+                        }
+                    }
+                }
+            })
+            return dbLog;
+        } catch (err) {
+            return {err: err, ctx: ctx}
+        }
     }),
     createWorkoutLog: protectedProcedure
     .input(workoutSchema)
-    .mutation(async({ctx,input}) => {
-        const {sets, notes, name, trainingPlanId} = input
-        const workout = await prisma.workoutLog.create({
-            data:{
-                trainingPlanId,
-                notes,
-                name,
-                authorId: ctx.userId,
-                sets: {
-                    createMany:{
-                        data: sets
+    .mutation(async({ctx, input}) => {
+        const {notes, workoutName, trainingPlanId} = input
+        const userId = ctx.auth.userId
+        const sets = input.sets.map((set) => {return( {...set, userId: ctx.auth.userId})})
+        try {
+            const workout = await prisma.workoutLog.create({
+                data:{
+                    trainingPlanId,
+                    notes,
+                    name: workoutName,
+                    authorId: userId,
+                    sets: {
+                        createMany:{
+                            data: sets
+                        }
                     }
+                },
+                include: {
+                    sets: true
                 }
-            }
-        })
-        return workout;
+            })
+            return workout;
+        } catch (err) {
+            return {err: err, uid: ctx.auth}
+        }
     }),
     updateWorkoutLog: protectedProcedure
     .input(workoutSchema)
@@ -57,12 +104,16 @@ export const workoutLogRouter = createTRPCRouter({
     deleteWorkoutLog: protectedProcedure
     .input(z.object({id: z.string()}))
     .mutation(async({ctx,input}) => {
-        const deletedWorkout = await prisma.workoutLog.delete({
-            where: {
-                id: input.id,
-            }
-        })
-        return deletedWorkout;
+        try {
+            const deletedWorkout = await prisma.workoutLog.delete({
+                where: {
+                    id: input.id,
+                }
+            })
+            return deletedWorkout;
+        } catch (err) {
+            return {err: err}
+        }
     }),
 })
 export type workoutLogRouter = typeof workoutLogRouter;
