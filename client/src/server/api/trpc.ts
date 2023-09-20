@@ -24,8 +24,8 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
   const sesh = getAuth(req); 
 
-  const userId = sesh.userId
-;
+  const userId = sesh.userId;
+
   return {
     userId,
     prisma
@@ -93,7 +93,7 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * Protected (authenticated) procedure
  *
  * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
- * the session is valid and guarantees `ctx.session.user` is not null.
+ * the session is valid and guarantees `ctx.user` is not null.
  *
  * @see https://trpc.io/docs/procedures
  */

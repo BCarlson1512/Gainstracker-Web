@@ -6,51 +6,69 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 export const setRouter = createTRPCRouter({
     getByAuthedUID: protectedProcedure
     .query(async({ctx}) => {
-        const userSets = await prisma.set.findMany({
-            where: {
-                userId: ctx.userId
-            },
-            take: 100
-        })
-        return userSets;
+        try {
+            const userSets = await prisma.set.findMany({
+                where: {
+                    userId: ctx.userId
+                },
+                take: 100
+            })
+            return userSets;
+        }catch(err) {
+            return {err: err, msg: ""}
+        }
     }),
     createSets: protectedProcedure
     .input(z.object({sets: z.array(setSchema)}))
     .mutation(async({ctx, input}) => {
         const {sets} = input;
-        const createdSets = await prisma.set.createMany({
-            data: {
-                ...sets
-            }
-        })
-        return createdSets;
+        try {
+            const createdSets = await prisma.set.createMany({
+                data: {
+                    ...sets
+                }
+            })
+            return createdSets;
+        }catch (err) {
+            return {err: err, msg: ""}
+        }
     }),
     updateSet: protectedProcedure
     .input(z.object({sid: z.string(), set: setSchema}))
     .mutation(async({ctx, input}) => {
         const {sid, set} = input;
-        const dbSet = await prisma.set.update({
-            where: {
-                id: sid,
-            },
-            data: {
-                ...set
-            }
-        })
-        return dbSet;
+        try {
+            const dbSet = await prisma.set.update({
+                where: {
+                    id: sid,
+                },
+                data: {
+                    ...set
+                }
+            })
+            return dbSet;
+        }catch (err) {
+            return {err: err, msg: ""}
+        }
+
     }),
     deleteSets: protectedProcedure
     .input(z.object({setIds: z.array(z.string())}))
     .mutation(async({ctx, input}) => {
         const {setIds} = input;
-        const deletedSets = await prisma.set.deleteMany({
-            where: {
-                id: {
-                    in: setIds
+        try {
+            const deletedSets = await prisma.set.deleteMany({
+                where: {
+                    id: {
+                        in: setIds
+                    }
                 }
-            }
-        })
-        return deletedSets;
+            })
+            return deletedSets;
+        }catch (err) {
+            return {err: err, msg: ""}
+        }
+
     })
 })
 export type setRouter = typeof setRouter;

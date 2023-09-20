@@ -25,10 +25,11 @@ model TrainingPlan {
 model WorkoutLog {
   id              String     @id @default(auto()) @map("_id") @db.ObjectId
   dateCreated     DateTime   @default(now())
+  name            String
   authorId        String // created by clerk user id
   trainingPlanId  String // Follows specific training plan
   sets            Set[]
-  notes           String // metadata field
+  notes           String? // metadata field
 }
 
 model Exercise {
@@ -47,7 +48,7 @@ model Set {
   exerciseId String   @db.ObjectId
   belongsTo  WorkoutLog @relation(fields: [workoutId], references: [id])
   workoutId  String   @db.ObjectId
-  userId     String
+  userId     String?
   weight     Float
   reps       Int
   unit       String @default("lbs")
