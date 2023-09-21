@@ -1,6 +1,7 @@
 import { trainingPlanRouter } from "~/server/api/routers/trainingPlan";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { setRouter } from "./routers/set";
+import { userRouter } from "./routers/user";
 import { workoutLogRouter } from "./routers/workoutLog";
 
 /**
@@ -11,7 +12,8 @@ import { workoutLogRouter } from "./routers/workoutLog";
 export const appRouter = createTRPCRouter({
   trainingPlan: trainingPlanRouter,
   set: setRouter,
-  workoutLog: workoutLogRouter
+  workoutLog: workoutLogRouter,
+  user: userRouter
 });
 
 // export type definition of API
