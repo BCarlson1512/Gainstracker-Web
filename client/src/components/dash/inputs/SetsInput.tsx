@@ -12,7 +12,7 @@ type SetDataProps = {
 const SetInput: React.FC<SetDataProps> = (props) => {
     const {index, handleWeightChange, handleNotesChange, handleSelectChange, handleRepsChange, handleRemove} = props
     return ( 
-        <div className="card-general">
+        <div className="card-large">
             <div className="mr-auto" onClick={() => handleRemove(index)}>
                 <AiOutlineClose />
             </div>
