@@ -114,8 +114,8 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
                     <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" defaultValue={planName} onBlur={(e) => setPlanName(e.target.value)} />
                 </div>
                 <div className="flex justify-center items-center p-2">                
-                    <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleClick}>Add an Exercise</div>
-                    <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-[#33096e] hover:border-[#33096e] transition ease-in">{isCreateMode? "Create" : "Update"} Training Plan</button>
+                    <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-slate-800 hover:border-slate-800 transition ease-in" onClick={handleClick}>Add an Exercise</div>
+                    <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-slate-800 hover:border-slate-800 transition ease-in">{isCreateMode? "Create" : "Update"} Training Plan</button>
                 </div>
                 {planExercises.map((exercise, index) => {
                     return (
