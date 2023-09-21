@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import type Exercise from "~/types/Exercise";
 import type Set from "~/types/Set";
 import SetInput from "./inputs/SetsInput";
@@ -16,17 +16,18 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
     const {id, numOfSets} = exerciseData
     const {setsData, setSetsData, setRemovedSets} = useContext(SetsContext)
     const {uid} = useUsers();
+    const [generatedSets, setGeneratedSets] = useState<boolean>(false);
 
     // populates sets state
     const generateSetsData = (n: number|undefined, eid: string) => {
-        if (n === undefined || eid === undefined) return;
-        if (setsData) setSetsData([]);
+        if (n === undefined || eid === undefined || generatedSets) return;
         const data: Set[] = []
         for (let i = 0; i < n; i++) {
             const blankSet = {weight: 0, reps: 0, unit: "lbs", exerciseId: eid, sid: uuidv1(), userId: uid}
             data.push(blankSet)
         }
         setSetsData(prevSetsData => [...prevSetsData, ...data])
+        setGeneratedSets(true)
     }
 
     // TODO: Refactor Into Generic HandleChange Util
@@ -91,7 +92,7 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
     }
 
     const addSet = () => {
-        const newSet:Set = {weight: 0, reps: 0, unit: "lbs", exerciseId: id}
+        const newSet:Set = {weight: 0, reps: 0, unit: "lbs", exerciseId: id, userId: uid}
         setSetsData([...setsData, newSet])
     }
 

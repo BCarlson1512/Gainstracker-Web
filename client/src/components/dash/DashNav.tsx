@@ -6,7 +6,7 @@ import { UserButton } from "@clerk/nextjs";
 
 const DashNav: React.FC = () => {
     return(
-        <div className="fixed z-10 top-0 left-0 h-screen w-24 m-0 flex flex-col bg-gray-800">
+        <div className="fixed z-10 top-0 left-0 h-screen w-24 m-0 flex flex-col bg-slate-800">
             <SideBarUserButton />
             <SideBarIcon href="/dash" icon={<BiHomeCircle size="28"/>} tooltip="Dashboard"/>
             <SideBarIcon href="/dash/create" icon={<BsPlusCircle size="28"/>} tooltip="create workout"/>

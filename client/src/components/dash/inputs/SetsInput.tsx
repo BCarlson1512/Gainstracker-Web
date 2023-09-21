@@ -18,11 +18,11 @@ const SetInput: React.FC<SetDataProps> = (props) => {
             </div>
             <div>
                 <label className="p-2 m-1">Reps</label>
-                <input type="number" className="border rounded-md" onBlur={(e) => handleRepsChange(Number(e.target.value), index)}></input>
+                <input type="number" className="input-field" onBlur={(e) => handleRepsChange(Number(e.target.value), index)}></input>
             </div>
             <div>
                 <label className="p-2 m-1">Weight</label>
-                <input type="number" className="border rounded-md" onBlur={(e) => handleWeightChange(Number(e.target.value), index)}></input>
+                <input type="number" className="input-field" onBlur={(e) => handleWeightChange(Number(e.target.value), index)}></input>
             </div>
             <div>
                 <label className="p-2 m-1">Unit</label>
@@ -33,7 +33,7 @@ const SetInput: React.FC<SetDataProps> = (props) => {
             </div>
             <div>
                 <label className="p-2 m-1">Notes</label>
-                <input type="text" className="border rounded-md" onBlur={(e) => handleNotesChange(e.target.value, index)}></input>
+                <input type="text" className="input-field" onBlur={(e) => handleNotesChange(e.target.value, index)}></input>
             </div>
         </div>
     )

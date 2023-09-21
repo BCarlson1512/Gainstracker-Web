@@ -21,15 +21,15 @@ const ExerciseInput: React.FC<ExerciseInputProps> = (props) => {
             </div>
             <div className="flex flex-row justify-between p-1 m-1">
                 <label className="m-1 text-slate-600">Exercise Name:</label>
-                <input className="m-1 text-slate-600 rounded-md border-2 border-slate-600" defaultValue={data.name} onChange={(e) => handleChange(id, e.target.value, null)} required/>
+                <input className="input-field" defaultValue={data.name} onChange={(e) => handleChange(id, e.target.value, null)} required/>
             </div>
             <div className="flex flex-row justify-between p-1 m-1">
                 <label className="m-1 text-slate-600">Muscle Group:</label>
-                <input className="m-1 text-slate-600 rounded-md border-2 border-slate-600" defaultValue={data.muscleGrouping} onChange={(e) => handleChange(id, null, e.target.value)} required/>
+                <input className="input-field" defaultValue={data.muscleGrouping} onChange={(e) => handleChange(id, null, e.target.value)} required/>
             </div>
             <div className="flex flex-row p-1 m-1">
                 <label className="m-1 text-slate-600">Number of Sets:</label>
-                <input type="number" min="0" max="25" step="1" defaultValue={data.numOfSets} onBlur={(e) => handleChange(id, null, null, Number(e.target.value))} required />
+                <input className="input-field" type="number" min="0" max="25" step="1" defaultValue={data.numOfSets} onBlur={(e) => handleChange(id, null, null, Number(e.target.value))} required />
             </div>
         </div>
     )
