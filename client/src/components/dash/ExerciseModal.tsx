@@ -4,6 +4,7 @@ import type Set from "~/types/Set";
 import SetInput from "./inputs/SetsInput";
 import { SetsContext } from "../../context/SetsContext"
 import { v1 as uuidv1 } from 'uuid';
+import { useUsers } from "~/hooks/useUsers";
 
 type ExerciseModalProps = {
     exerciseData: Exercise,
@@ -14,14 +15,15 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
     const {exerciseData} = props
     const {id, numOfSets} = exerciseData
     const {setsData, setSetsData, setRemovedSets} = useContext(SetsContext)
+    const {uid} = useUsers();
 
     // populates sets state
     const generateSetsData = (n: number|undefined, eid: string) => {
         if (n === undefined || eid === undefined) return;
-        if (setsData.filter(set => set.exerciseId === eid).length === numOfSets) return;
+        if (setsData) setSetsData([]);
         const data: Set[] = []
         for (let i = 0; i < n; i++) {
-            const blankSet = {weight: 0, reps: 0, unit: "lbs", exerciseId: eid, sid: uuidv1()}
+            const blankSet = {weight: 0, reps: 0, unit: "lbs", exerciseId: eid, sid: uuidv1(), userId: uid}
             data.push(blankSet)
         }
         setSetsData(prevSetsData => [...prevSetsData, ...data])
@@ -95,7 +97,7 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
 
     useEffect(() => {
         generateSetsData(numOfSets, id)
-    }, [numOfSets, id])
+    }, [numOfSets, id, uid])
 
     return(
         <div className="flex flex-col p-8 m-2 items-center justify-center">
