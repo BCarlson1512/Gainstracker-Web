@@ -48,14 +48,96 @@
         border-2
 }
 
+.btn-reg {
+    @apply text-slate-700
+        text-xl
+        bg-white
+        font-semibold
+        p-2
+        m-2
+        border-2
+        rounded-lg
+        text-center
+}
+
+.btn-invert {
+    @apply text-white 
+            text-xl 
+            p-2 
+            px-4 
+            m-2 
+            border-2 
+            rounded-lg 
+            text-center
+}
+
+.btn-dash-reg {
+    @apply  text-slate-800
+            bg-white
+            text-xl
+            font-semibold
+            p-4
+            m-4
+            border-2
+            border-gray-100
+            rounded-lg
+}
+
+.btn-dash-invert {
+    @apply text-white
+            text-xl
+            bg-slate-800
+            border-slate-700
+            font-semibold
+            p-4
+            m-4
+            border-2
+            rounded-lg
+}
+
+/** Text gradients **/
+
+.grad-transition {
+    @apply transition-all 
+        duration-300 
+        ease-in-out
+}
+
+.active-grad-1 {
+    @apply bg-gradient-to-r from-slate-300 to-slate-500 bg-clip-text text-transparent
+}
+
+.active-grad-2 {
+    @apply bg-gradient-to-r from-amber-200 to-yellow-500 bg-clip-text text-transparent
+}
+
+.active-grad-3 {
+    @apply bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent
+}
+
 /** Sidebar properties */
 
 .sidebar-icon {
-    @apply relative flex items-center justify-center
-            h-16 w-16 mt-2 mb-2 mx-auto shadow-lg rounded-md
-            bg-white text-slate-800 hover:text-slate-700 hover:rounded-xl
-            transition-all duration-300 ease-in;
+    @apply relative 
+        flex 
+        items-center 
+        justify-center
+        h-16 
+        w-16 
+        mt-2 
+        mb-2 
+        mx-auto 
+        shadow-lg 
+        rounded-md
+        bg-white 
+        text-slate-800 
+        hover:text-slate-700 
+        hover:rounded-xl
+        transition-all 
+        duration-300 
+        ease-in;
 }
+
 .sidebar-tooltip {
     @apply absolute w-auto p-2 m-2 min-w-max left-14 rounded-md shadow-md
     text-white bg-gray-900 
@@ -71,6 +153,12 @@
     @apply border border-gray-100 bg-white rounded-lg drop-shadow-md
     flex flex-col items-center
     h-48 p-4 mx-2
+}
+
+.card-large {
+    @apply border border-gray-100 bg-white rounded-lg drop-shadow-md
+    flex flex-col items-center
+    h-60 p-8 mx-2 my-2
 }
 
 /* Stats-Cards */

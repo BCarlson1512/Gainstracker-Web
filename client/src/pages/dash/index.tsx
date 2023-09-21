@@ -18,19 +18,19 @@ const Dash: React.FC = (props) => {
                         <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-[5rem]"> Dashboard </h1>
                         <div className="flex flex-row justify-center items-center">
                             <Link
-                                className="text-xl text-white bg-[#33096e] border-[#33096e] font-semibold p-4 m-4 border-2 rounded-lg"
+                                className="btn-dash-invert"
                                 href="/log"
                             >
                                 Log A Workout
                             </Link>
                             <Link
-                                className="text-xl text-white bg-[#33096e] border-[#33096e] font-semibold p-4 m-4 border-2 rounded-lg"
+                                className="btn-dash-invert"
                                 href="/workouts"
                             >
                                 View Existing Workouts
                             </Link>
                             <Link
-                                className="text-xl text-[#33096e] bg-white font-semibold p-4 m-4 border-2 rounded-lg"
+                                className="btn-dash-reg"
                                 href="/create"
                             >
                                 Create New Workout
@@ -45,7 +45,7 @@ const Dash: React.FC = (props) => {
                             <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Workouts This Week"}/>
                             <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Sets Completed"}/>
                         </div>
-                        <div className="flex flex-col justify-center items-center">
+                        <div className="flex-col-center">
                             <div className="grid grid-cols-3 gap-4 px-4 mr-6">
                                 <div className="col-span-3">
                                     <ChartsCard chartHeading="Weekly Volume"/>

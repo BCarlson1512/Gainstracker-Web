@@ -4,12 +4,12 @@
 
 - Design UI
   - ~~Create Workouts~~
-  - Log Workouts
+  - ~~Log Workouts~~
   - View Workouts
   - User Statistics
 - ~~Design API~~
 - ~~Settle on DB for project~~
-- Determine cloud deployment (AWS/GCP)
+- ~~Determine cloud deployment (Vercel)~~
 
 ## The Why
 
