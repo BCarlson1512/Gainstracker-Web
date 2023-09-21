@@ -7,79 +7,65 @@ import { upsertExercises } from "~/utils/exercises/exercises";
 export const trainingPlanRouter = createTRPCRouter({
     getAll: publicProcedure
     .query(async({ctx}) => {
-        try {
-            const trainingPlans = await prisma.trainingPlan.findMany({
-                include: {
-                    exercises: true
-                },
-                take: 100,
-            });
-            return trainingPlans;
-        } catch (err) {
-            return {err: err, msg:`Could not get training plans`}
-        }
+        const trainingPlans = await prisma.trainingPlan.findMany({
+            include: {
+                exercises: true
+            },
+            take: 100,
+        });
+        return trainingPlans;
     }),
     getByAuthedUID: protectedProcedure
     .query(async({ctx}) => {
-        try {
-            const trainingPlan = await prisma.trainingPlan.findMany({
-                where: {
-                    authorId: ctx.userId,
-                },
-                include: {
-                    exercises: true
-                },
-                take: 100,
-            });
-            return trainingPlan;
-        } catch (err) {
-            return {err: err, msg:`Could not get user's plans`}
-        }
+        const {userId} = ctx.auth
+        const trainingPlan = await prisma.trainingPlan.findMany({
+            where: {
+                authorId: userId,
+            },
+            include: {
+                exercises: true
+            },
+            take: 100,
+        });
+        return trainingPlan;
     }),
     getByUserID: publicProcedure
     .input(z.string())
     .query(async({ctx, input}) => {
-        try {
-            const trainingPlan = await prisma.trainingPlan.findMany({
-                where: {
-                    authorId: input,
-                },
-                include: {
-                    exercises: true
-                },
-                take: 100,
-            });
-            return trainingPlan;
-        } catch (err) {
-            return {err: err, msg:`Could not get user's training plans`}
-        }
+        const trainingPlan = await prisma.trainingPlan.findMany({
+            where: {
+                authorId: input,
+            },
+            include: {
+                exercises: true
+            },
+            take: 100,
+        });
+        return trainingPlan;
     }),
     getID: publicProcedure
     .input(z.string())
     .query(async({ctx, input}) => {
-        try {
-            const trainingPlan = await prisma.trainingPlan.findFirst({
-                where: {
-                    id: input
-                },
-                include: {
-                    exercises: true
-                },
-            })
-            return trainingPlan;
-        } catch (err) {
-            return {err: err, msg:`Could not find training plan`}
-        }
+        const trainingPlan = await prisma.trainingPlan.findFirst({
+            where: {
+                id: input
+            },
+            include: {
+                exercises: true
+            },
+        })
+        return trainingPlan;
     }),
     createTrainingPlan: protectedProcedure
     .input(trainingPlanSchema)
     .mutation(async({ctx, input}) => {
         const {name, exercises} = input
+        const {userId} = ctx.auth
         try {
             const createdTrainingPlan = await prisma.trainingPlan.create({
                 data: {
                     name: name,
-                    authorId: ctx.userId,
+                    authorId: userId,
                     exercises:{ 
                         createMany:{
                             data: exercises

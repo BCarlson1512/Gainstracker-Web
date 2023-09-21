@@ -31,7 +31,7 @@ const Home: React.FC = () => {
             {!!user.isSignedIn &&
               <>
                 <Link 
-                  className="text-xl text-[#33096e] bg-white font-semibold p-4 m-4 border-2 rounded-lg" 
+                  className="text-xl text-[#33096e] bg-white font-semibold p-2 m-2 border-2 rounded-lg text-center" 
                   href="/dash"
                 >
                   Dashboard

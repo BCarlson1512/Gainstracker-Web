@@ -5,5 +5,5 @@ export const workoutSchema = z.object({
     trainingPlanId: z.string(),
     sets: z.array(setSchema),
     notes: z.string(),
-    name: z.string()
+    workoutName: z.string()
 })
