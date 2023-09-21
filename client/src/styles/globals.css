@@ -95,6 +95,26 @@
             rounded-lg
 }
 
+/** Text gradients **/
+
+.grad-transition {
+    @apply transition-all 
+        duration-300 
+        ease-in;
+}
+
+.active-grad-1 {
+    @apply bg-gradient-to-r from-slate-300 to-slate-500 bg-clip-text text-transparent
+}
+
+.active-grad-2 {
+    @apply bg-gradient-to-r from-amber-200 to-yellow-500 bg-clip-text text-transparent
+}
+
+.active-grad-3 {
+    @apply bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent
+}
+
 /** Sidebar properties */
 
 .sidebar-icon {
