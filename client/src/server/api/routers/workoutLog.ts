@@ -44,9 +44,6 @@ export const workoutLogRouter = createTRPCRouter({
     .mutation(async({ctx, input}) => {
         const {notes, workoutName, trainingPlanId, sets} = input;
         const {userId} = ctx.auth
-        console.log(ctx.auth)
-        // undefined property here
-        return {ctx: ctx}
         const userIdSets = sets.map(set => {return {...set, userId}})
         try {
             // context exists until here... where it's getting destroyed
@@ -66,34 +63,6 @@ export const workoutLogRouter = createTRPCRouter({
             return dbLog;
         } catch (err) {
             return {err: err, ctx: ctx}
-        }
-    }),
-    createWorkoutLog: protectedProcedure
-    .input(workoutSchema)
-    .mutation(async({ctx, input}) => {
-        const {notes, workoutName, trainingPlanId} = input
-        const userId = ctx.auth.userId
-        const sets = input.sets.map((set) => {return( {...set, userId: ctx.auth.userId})})
-        try {
-            const workout = await prisma.workoutLog.create({
-                data:{
-                    trainingPlanId,
-                    notes,
-                    name: workoutName,
-                    authorId: userId,
-                    sets: {
-                        createMany:{
-                            data: sets
-                        }
-                    }
-                },
-                include: {
-                    sets: true
-                }
-            })
-            return workout;
-        } catch (err) {
-            return {err: err, uid: ctx.auth}
         }
     }),
     updateWorkoutLog: protectedProcedure
