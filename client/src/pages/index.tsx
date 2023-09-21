@@ -20,10 +20,10 @@ const Home: React.FC = () => {
           <div className="flex">
             {!user.isSignedIn &&
               <>
-                <div className="text-white text-2xl p-2 px-4 m-2 border-2 rounded-lg text-center">
+                <div className="btn-invert">
                     <SignInButton />
                 </div>
-                <div className="text-white text-2xl p-2 px-4 m-2 border-2 rounded-lg text-center">
+                <div className="btn-reg">
                     <SignUpButton />
                 </div>
               </> 
@@ -31,12 +31,12 @@ const Home: React.FC = () => {
             {!!user.isSignedIn &&
               <>
                 <Link 
-                  className="text-xl text-[#33096e] bg-white font-semibold p-2 m-2 border-2 rounded-lg text-center" 
+                  className="btn-reg" 
                   href="/dash"
                 >
                   Dashboard
                 </Link>
-                <div className="text-white text-2xl p-2 px-4 m-2 border-2 rounded-lg text-center">
+                <div className="btn-invert">
                   <SignOutButton />
                 </div>
               </>
