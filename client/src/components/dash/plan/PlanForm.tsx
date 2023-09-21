@@ -109,11 +109,14 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
                 <PlanSelect trainingPlans={userTrainingPlans.data} handleChange={handleSubmitChange} />
             )}
             <form className="flex flex-col justify-center" onSubmit={(e) =>{handleSubmit(e)}}>
-                <div>
+                <div className="flex flex-col items-center justify-center pb-2">
                     <label htmlFor="name" className="text-white px-2 mx-2">Plan name:</label>
                     <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" defaultValue={planName} onBlur={(e) => setPlanName(e.target.value)} />
                 </div>
-                <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleClick}>Add an Exercise</div>
+                <div className="flex justify-center items-center p-2">                
+                    <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={handleClick}>Add an Exercise</div>
+                    <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-[#33096e] hover:border-[#33096e] transition ease-in">{isCreateMode? "Create" : "Update"} Training Plan</button>
+                </div>
                 {planExercises.map((exercise, index) => {
                     return (
                         <ExerciseInput 
@@ -127,7 +130,7 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
                         />
                     )
                 })}
-                <button type="submit" className="flex justify-center items-center text-white border rounded-md p-2 m-2 text-center hover:bg-[#33096e] hover:border-[#33096e] transition ease-in">{isCreateMode? "Create" : "Update"} Training Plan</button>
+                
             </form>
         </div>
     )

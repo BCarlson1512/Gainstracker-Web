@@ -15,7 +15,7 @@ const ExerciseInput: React.FC<ExerciseInputProps> = (props) => {
         return <div>Loading...</div>
     }
     return ( 
-        <div className="flex flex-col p-2 m-2 card-general">
+        <div className="flex flex-col p-2 m-2 card-large justify-center items-center">
             <div className="mr-auto" onClick={() => handleRemove(id)}>
                 <AiOutlineClose />
             </div>

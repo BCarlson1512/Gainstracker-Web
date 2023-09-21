@@ -55,10 +55,14 @@ const Log: React.FC = () => {
                         <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-[5rem]">Log a new workout</h1>
                     </div>
                     <div className="flex-col-x-center">
-                        <label className="input-label">Log Name</label>
-                        <input className="input-field" defaultValue={logName} onBlur={(e) => setLogName(e.target.value)}></input>
-                        <label className="input-label">Log Notes</label>
-                        <input className="input-field" defaultValue={logNotes} onBlur={(e) => setLogNotes(e.target.value)}></input>
+                        <div className="flex">
+                            <label className="input-label">Name</label>
+                            <input className="input-field" defaultValue={logName} onBlur={(e) => setLogName(e.target.value)} />
+                        </div>
+                        <div className="flex">
+                            <label className="input-label">Notes</label>
+                            <input className="input-field" defaultValue={logNotes} onBlur={(e) => setLogNotes(e.target.value)} />
+                        </div>
                         <button className="input-btn" onClick={(e) => handleSubmit(e)}>Create Log</button>
                     </div>
                     <PlanSelect trainingPlans={userTrainingPlans.data} handleChange={handleSubmitChange}/>
