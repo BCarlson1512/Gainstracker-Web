@@ -21,8 +21,6 @@ const Log: React.FC = () => {
     const {mutate} = api.workoutLog.createLog.useMutation({
         onSuccess: (ctx) => {
             toast.success("Successfully created log")
-            setLogName("");
-            setLogNotes("");
             setSetsData([]);
             setRemovedSets([])
             setSelectedPlan(undefined)
