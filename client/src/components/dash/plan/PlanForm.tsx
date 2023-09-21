@@ -110,8 +110,8 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
             )}
             <form className="flex flex-col justify-center" onSubmit={(e) =>{handleSubmit(e)}}>
                 <div className="flex flex-col items-center justify-center pb-2">
-                    <label htmlFor="name" className="text-white px-2 mx-2">Plan name:</label>
-                    <input id="name" className="text-slate-600 px-2 mx-2 border rounded-md" defaultValue={planName} onBlur={(e) => setPlanName(e.target.value)} />
+                    <label htmlFor="name" className="input-label">Plan name:</label>
+                    <input id="name" className="input-field" defaultValue={planName} onBlur={(e) => setPlanName(e.target.value)} />
                 </div>
                 <div className="flex justify-center items-center p-2">                
                     <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-slate-800 hover:border-slate-800 transition ease-in" onClick={handleClick}>Add an Exercise</div>
