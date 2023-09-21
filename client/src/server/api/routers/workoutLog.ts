@@ -44,7 +44,6 @@ export const workoutLogRouter = createTRPCRouter({
     .mutation(async({ctx, input}) => {
         const {notes, workoutName, trainingPlanId, sets} = input;
         const {userId} = ctx.auth
-        const userIdSets = sets.map(set => {return {...set, userId}})
         try {
             // context exists until here... where it's getting destroyed
             const dbLog = await prisma.workoutLog.create({
@@ -55,22 +54,22 @@ export const workoutLogRouter = createTRPCRouter({
                     authorId: userId,
                     sets: {
                         createMany: {
-                            data: userIdSets
+                            data: sets
                         }
                     }
                 }
             })
             return dbLog;
         } catch (err) {
-            return {err: err, ctx: ctx}
+            return {err: err, ctx: sets}
         }
     }),
-    updateWorkoutLog: protectedProcedure
+    updateLog: protectedProcedure
     .input(workoutSchema)
     .mutation(async({ctx,input}) => {
         return {};
     }),
-    deleteWorkoutLog: protectedProcedure
+    deleteLog: protectedProcedure
     .input(z.object({id: z.string()}))
     .mutation(async({ctx,input}) => {
         try {
