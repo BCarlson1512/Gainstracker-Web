@@ -22,7 +22,7 @@ const Create: React.FC = () => {
                 <title>Create a New Workout</title>
             </Head>
             <DashNav />
-            <main className="flex flex-col items-center justify-center ml-24 px-8 min-h-screen w-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+            <main className="flex-col-centered main-bg ml-24 px-8 min-h-screen w-screen">
                 <PlanForm userId={user.id} isCreateMode={true}/>
             </main>
         </>

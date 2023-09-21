@@ -102,7 +102,7 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
 
     return (
         <div className="flex flex-col">
-            <div className="flex justify-center items-center py-8">
+            <div className="flex-centered py-8">
                 <h1 className="text-white font-bold text-3xl drop-shadow-sm">{isCreateMode ? "Create a New" : "Update"} Training Plan</h1>
             </div>
             {!isCreateMode && (

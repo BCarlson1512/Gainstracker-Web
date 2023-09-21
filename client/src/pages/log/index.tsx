@@ -51,17 +51,17 @@ const Log: React.FC = () => {
                 <title>Log a workout</title>
             </Head>
             <DashNav />
-            <main className="flex min-h-screen w-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+            <main className="flex-col-centered main-bg min-h-screen w-screen">
                 <div className="flex w-full flex-col gap-12 px-4 py-16">
-                    <div className="flex flex-col items-center">
+                    <div className="flex-col-x-center">
                         <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-[5rem]">Log a new workout</h1>
                     </div>
-                    <div className="flex flex-col items-center">
-                        <label className="p-2 m-1 text-white">Log Name</label>
-                        <input className="rounded-md p-2 m-1" defaultValue={logName} onBlur={(e) => setLogName(e.target.value)}></input>
-                        <label className="p-2 m-1 text-white">Log Notes</label>
-                        <input className="rounded-md p-2 m-1" defaultValue={logNotes} onBlur={(e) => setLogNotes(e.target.value)}></input>
-                        <button className="rounded-md p-2 m-1 text-white border-white border-2" onClick={(e) => handleSubmit(e)}>Create Log</button>
+                    <div className="flex-col-x-center">
+                        <label className="input-label">Log Name</label>
+                        <input className="input-field" defaultValue={logName} onBlur={(e) => setLogName(e.target.value)}></input>
+                        <label className="input-label">Log Notes</label>
+                        <input className="input-field" defaultValue={logNotes} onBlur={(e) => setLogNotes(e.target.value)}></input>
+                        <button className="input-btn" onClick={(e) => handleSubmit(e)}>Create Log</button>
                     </div>
                     <PlanSelect trainingPlans={userTrainingPlans.data} handleChange={handleSubmitChange}/>
                     <div>

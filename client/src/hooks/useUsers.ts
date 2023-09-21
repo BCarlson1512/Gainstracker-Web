@@ -11,7 +11,6 @@ export const useUsers = () => {
 
     useEffect(() => {
         if (data) {
-            console.log(data.uid)
             setUID(data.uid)
         }
     }, [data])

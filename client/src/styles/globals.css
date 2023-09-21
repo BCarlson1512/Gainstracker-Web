@@ -2,6 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/** Base properties **/
+
+.main-bg {
+    @apply bg-gradient-to-r from-slate-900 to-slate-700
+}
+
+.flex-col-centered {
+    @apply flex flex-col items-center justify-center
+}
+
+.flex-centered {
+    @apply flex justify-center items-center
+}
+
+.flex-col-x-center {
+    @apply flex flex-col items-center
+}
+
+.flex-col-y-center {
+    @apply flex flex-col justify-center
+}
+
+/** Inputs & Labels */
+
+.input-label {
+    @apply p-2 m-1 text-white
+}
+
+.input-field {
+    @apply rounded-md 
+        p-2 
+        m-1
+        border-2
+        border-slate-600
+        text-slate-600
+}
+
+.input-btn {
+    @apply rounded-md 
+        p-2 
+        m-1 
+        text-white 
+        border-white 
+        border-2
+}
+
+/** Sidebar properties */
+
 .sidebar-icon {
     @apply relative flex items-center justify-center
             h-16 w-16 mt-2 mb-2 mx-auto shadow-lg rounded-md

@@ -12,7 +12,7 @@ const Dash: React.FC = (props) => {
                 <title>Dashboard</title>
             </Head>
             <DashNav />
-            <main className="flex min-h-screen w-screen bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+            <main className="flex main-bg min-h-screen w-screen">
                 <div className="flex w-full flex-col gap-12 px-4 py-16 ">
                     <div className="flex ml-20 pl-8 w-[90vw] justify-between items-center">
                         <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-[5rem]"> Dashboard </h1>
