@@ -19,7 +19,7 @@ const Log: React.FC = () => {
     const {setsData, setSetsData, setRemovedSets} = useContext(SetsContext)
 
     const {mutate} = api.workoutLog.createLog.useMutation({
-        onSuccess: (ctx) => {
+        onSuccess: () => {
             toast.success("Successfully created log")
             setSetsData([]);
             setRemovedSets([])
@@ -37,8 +37,7 @@ const Log: React.FC = () => {
         }
     }
 
-    const handleSubmit = (e:React.SyntheticEvent<HTMLSelectElement>) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         if (selectedPlan?.id)
             mutate({workoutName: logName, trainingPlanId: selectedPlan?.id, sets: setsData, notes: logNotes})
     }
@@ -57,13 +56,13 @@ const Log: React.FC = () => {
                     <div className="flex-col-x-center">
                         <div className="flex">
                             <label className="input-label">Name</label>
-                            <input className="input-field" defaultValue={logName} onBlur={(e) => setLogName(e.target.value)} />
+                            <input className="input-field" defaultValue={logName} onBlur={(e) => setLogName(e.target.value)} required/>
                         </div>
                         <div className="flex">
                             <label className="input-label">Notes</label>
                             <input className="input-field" defaultValue={logNotes} onBlur={(e) => setLogNotes(e.target.value)} />
                         </div>
-                        <button className="input-btn" onClick={(e) => handleSubmit(e)}>Create Log</button>
+                        <button className="input-btn" onClick={handleSubmit}>Create Log</button>
                     </div>
                     <PlanSelect trainingPlans={userTrainingPlans.data} handleChange={handleSubmitChange}/>
                     <div>
