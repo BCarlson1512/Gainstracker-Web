@@ -9,8 +9,8 @@ const View:React.FC = () => {
     const {id} = router.query
     if (!id) return <div>Loading...</div>
 
-    const {data} = api.workoutLog.getID.useQuery({id: id})
-    const {workoutData, exercises} = data;
+    const {data,isLoading} = api.workoutLog.getID.useQuery({id: id})
+
     return (
         <>
             <Head>
@@ -18,8 +18,8 @@ const View:React.FC = () => {
             </Head>
             <DashNav />
             <main className="flex-col-centered main-bg min-h-screen w-screen">
-                {workoutData && (
-                    <WorkoutCard workoutData={workoutData} exerciseData={exercises}/>
+                {(!isLoading && data) && (
+                    <WorkoutCard workoutData={data.workoutData} exerciseData={data.exercises}/>
                 )}
             </main>
         </>
