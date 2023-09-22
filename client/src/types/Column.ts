@@ -1,5 +1,5 @@
 export type Column = {
     label: string
-    accessor: string
+    accessor?: string
     sortable: boolean
 }

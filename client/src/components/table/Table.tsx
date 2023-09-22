@@ -3,10 +3,9 @@ import { TableBody } from "./TableBody"
 import { TableHead } from "./TableHead"
 
 const tableCols =  [
-    {label: "Name", accessor: "workout_name", sortable: true},
-    {label: "Date", accessor: "creation_date", sortable: true},
-    {label: "Exercises", accessor: "num_of_exercises", sortable: true},
-    {label: "Sets", accessor: "num_of_sets", sortable: true},
+    {label: "Name", accessor: "name", sortable: true},
+    {label: "Date", accessor: "dateCreated", sortable: true},
+    {label: "Action", sortable: false}
 ]
 
 type TableProps = {
@@ -15,6 +14,7 @@ type TableProps = {
 
 export const Table:React.FC<TableProps> = ({data}) => {
     const {tableData, sortHandler} = useSortableTable(data);
+    if (!data) return (<div> Loading... </div>)
     return (
         <table>
             <TableHead columns={tableCols}/>
