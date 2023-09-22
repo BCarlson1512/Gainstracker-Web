@@ -3,8 +3,8 @@ import type Exercise from "~/types/Exercise";
 import type Set from "~/types/Set";
 import SetInput from "./inputs/SetsInput";
 import { SetsContext } from "../../context/SetsContext"
-import { v1 as uuidv1 } from 'uuid';
 import { useUsers } from "~/hooks/useUsers";
+import { v1 as uuidv1 } from 'uuid';
 
 type ExerciseModalProps = {
     exerciseData: Exercise,
@@ -18,16 +18,29 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
     const {uid} = useUsers();
     const [generatedSets, setGeneratedSets] = useState<boolean>(false);
 
+    const generateSetObject = (setData:Set | undefined, uid: string):Set => {
+
+        return {
+            weight: setData?.weight ? setData.weight : 0, 
+            reps: setData?.reps ? setData.reps : 0, 
+            unit: setData?.unit ? setData.unit : "lbs", 
+            exerciseId: setData?.exerciseId ? setData.exerciseId : eid, 
+            sid: uuidv1(), 
+            userId: setData?.userId ? setData.userId : uid
+        }
+    }
+
     // populates sets state
     const generateSetsData = (n: number|undefined, eid: string) => {
         if (n === undefined || eid === undefined || generatedSets) return;
         const data: Set[] = []
         for (let i = 0; i < n; i++) {
-            const blankSet = {weight: 0, reps: 0, unit: "lbs", exerciseId: eid, sid: uuidv1(), userId: uid}
+            const setData = exerciseData?.sets[i];
+            const blankSet = generateSetObject(setData, uid)
             data.push(blankSet)
         }
         setSetsData(prevSetsData => [...prevSetsData, ...data])
-        setGeneratedSets(true)
+        console.log(setsData)
     }
 
     // TODO: Refactor Into Generic HandleChange Util
@@ -112,6 +125,7 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
                 {setsData.filter(set => set.exerciseId === exerciseData.id).map((set, index) => 
                 <SetInput 
                     key={index}
+                    data={set}
                     index={set.sid!}
                     handleRepsChange={handleRepsChange}
                     handleWeightChange={handleWeightChange}
