@@ -1,8 +1,16 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { WorkoutCard } from "~/components/cards/WorkoutCard";
 import DashNav from "~/components/dash/DashNav";
+import { Table } from "~/components/table/Table";
 import { api } from "~/utils/api";
+
+const viewTableCols = [
+    {label:"Name", accessor: "name", sortable: true},
+    {label:"Muscle Group", accessor: "muscleGrouping", sortable: true},
+    {label: "Weight", accessor: "weight", sortable: true},
+    {label: "Reps", accessor: "reps", sortable: true},
+    {label: "Notes", accessor: "notes", sortable: false},
+]
 
 const View:React.FC = () => {
     const router = useRouter()
@@ -18,8 +26,13 @@ const View:React.FC = () => {
             </Head>
             <DashNav />
             <main className="flex-col-centered main-bg min-h-screen w-screen">
-                {(!isLoading && data) && (
-                    <WorkoutCard workoutData={data.workoutData} exerciseData={data.exercises}/>
+                {(!isLoading && data) && 
+                (
+                    
+                    <Table 
+                    data={data.exercises} 
+                    columns={viewTableCols}
+                    />
                 )}
             </main>
         </>

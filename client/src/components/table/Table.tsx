@@ -2,23 +2,32 @@ import { useSortableTable } from "~/hooks/useSortableTable"
 import { TableBody } from "./TableBody"
 import { TableHead } from "./TableHead"
 
-const tableCols =  [
+const defaultTableCols =  [
     {label: "Name", accessor: "name", sortable: true},
     {label: "Date", accessor: "dateCreated", sortable: true},
     {label: "Action", accessor: "action", sortable: false}
 ]
 
-type TableProps = {
-    data: any[]
+type TableColumn = {
+    label: string
+    accessor: string
+    sortable: boolean
 }
 
-export const Table:React.FC<TableProps> = ({data}) => {
+type TableProps = {
+    data: any[]
+    columns?: TableColumn[]
+}
+
+export const Table:React.FC<TableProps> = (props) => {
+    const {data, columns} = props
     const {tableData, sortHandler} = useSortableTable(data);
+
     if (!data) return (<div> Loading... </div>)
     return (
         <table className="relative overflow-x-auto">
-            <TableHead columns={tableCols}/>
-            <TableBody columns={tableCols} tableData={tableData}/>
+            <TableHead columns={columns ? columns : defaultTableCols}/>
+            <TableBody columns={columns ? columns : defaultTableCols} tableData={tableData}/>
         </table>
     )
 }
