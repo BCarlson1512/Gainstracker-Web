@@ -5,7 +5,7 @@ import { TableHead } from "./TableHead"
 const tableCols =  [
     {label: "Name", accessor: "name", sortable: true},
     {label: "Date", accessor: "dateCreated", sortable: true},
-    {label: "Action", sortable: false}
+    {label: "Action", accessor: "action", sortable: false}
 ]
 
 type TableProps = {

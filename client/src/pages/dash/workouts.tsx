@@ -11,7 +11,8 @@ const workouts: React.FC = () => {
         View Log
     */}
 
-    const {data} = api.workoutLog.getAuthedTableData.useQuery()
+    const {data, isLoading} = api.workoutLog.getAuthedTableData.useQuery()
+
     return(
         <>
             <Head>
@@ -22,7 +23,7 @@ const workouts: React.FC = () => {
                 <div className="flex-col-x-center">
                     <h1 className="text-5xl font-extrabold tracking-tight text-white">Workout Logs</h1>
                 </div>
-                {data && (
+                {(!isLoading && data) && (
                     <div className="relative overflow-x-auto">
                         <Table data={data}/>
                     </div>

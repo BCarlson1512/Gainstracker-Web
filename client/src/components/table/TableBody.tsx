@@ -1,3 +1,6 @@
+import { AiOutlineDelete } from "react-icons/ai"
+import { CiViewList } from "react-icons/ci"
+import { MdOutlineModeEditOutline } from "react-icons/md"
 import type { Column } from "~/types/Column"
 
 type TableBodyProps = {
@@ -15,7 +18,9 @@ export const TableBody:React.FC<TableBodyProps> = ({columns, tableData}) => {
                             if (accessor === "dateCreated") {
                                 const tData = data[accessor] ? data[accessor].toString().substring(4, 15): "--"
                                 return <td key={accessor}>{tData}</td>
-                            } else {
+                            } else if (accessor === "action"){
+                                return <ActionRow key={accessor} />
+                            }else {
                                 const tData = data[accessor] ? data[accessor] : "--"
                                 return <td key={accessor}>{tData}</td>
                             }
@@ -23,5 +28,15 @@ export const TableBody:React.FC<TableBodyProps> = ({columns, tableData}) => {
                     </tr>
                 )})}
         </tbody>
+    )
+}
+
+const ActionRow = () => {
+    return (
+        <td className="flex">
+            <AiOutlineDelete />
+            <MdOutlineModeEditOutline />
+            <CiViewList />
+        </td>
     )
 }
