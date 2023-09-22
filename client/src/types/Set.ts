@@ -5,6 +5,7 @@ type Set = {
     exerciseId?: string,
     sid?: string
     userId?: string
+    notes?:string
 }
 
 export default Set;
