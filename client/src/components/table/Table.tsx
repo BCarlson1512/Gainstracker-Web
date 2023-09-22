@@ -16,7 +16,7 @@ export const Table:React.FC<TableProps> = ({data}) => {
     const {tableData, sortHandler} = useSortableTable(data);
     if (!data) return (<div> Loading... </div>)
     return (
-        <table>
+        <table className="relative overflow-x-auto">
             <TableHead columns={tableCols}/>
             <TableBody columns={tableCols} tableData={tableData}/>
         </table>

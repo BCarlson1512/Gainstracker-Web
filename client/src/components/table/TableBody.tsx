@@ -13,16 +13,18 @@ export const TableBody:React.FC<TableBodyProps> = ({columns, tableData}) => {
         <tbody>
             {tableData.map((data) => {
                 return (
-                    <tr key={data.id}>
+                    <tr
+                    className="border-b border-white text-white" 
+                    key={data.id}>
                         {columns.map(({accessor}) => {
                             if (accessor === "dateCreated") {
                                 const tData = data[accessor] ? data[accessor].toString().substring(4, 15): "--"
-                                return <td key={accessor}>{tData}</td>
+                                return <td className="px-6 py-4 font-medium whitespace-nowrap" key={accessor}>{tData}</td>
                             } else if (accessor === "action"){
                                 return <ActionRow key={accessor} />
                             }else {
                                 const tData = data[accessor] ? data[accessor] : "--"
-                                return <td key={accessor}>{tData}</td>
+                                return <td className="px-6 py-4 font-medium whitespace-nowrap" key={accessor}>{tData}</td>
                             }
                         })}
                     </tr>
@@ -33,7 +35,7 @@ export const TableBody:React.FC<TableBodyProps> = ({columns, tableData}) => {
 
 const ActionRow = () => {
     return (
-        <td className="flex">
+        <td className="flex items-center justify-center">
             <AiOutlineDelete />
             <MdOutlineModeEditOutline />
             <CiViewList />
