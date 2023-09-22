@@ -13,11 +13,33 @@ export const workoutLogRouter = createTRPCRouter({
                     authorId: userId
                 },
                 include: {
-                    sets: true
+                    sets: true,
                 },
                 take: 100
             })
             return {workouts, ctx: ctx};
+        } catch (err) {
+            return {err: err}
+        }
+    }),
+    getAuthedTableData: protectedProcedure
+    .query(async({ctx}) => {
+        const {userId} = ctx.auth;
+        try { // TODO: PAGINATE
+            // get count of sets
+            if (!userId) throw new Error(`UNAUTHORIZED`)
+            const workouts = await prisma.workoutLog.findMany({
+                where: {
+                    authorId: userId
+                },
+                include: {
+                    _count: {
+                        select: {sets: true}
+                    }
+                },
+                take: 100
+            })
+            return workouts
         } catch (err) {
             return {err: err}
         }
