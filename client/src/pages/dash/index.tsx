@@ -1,8 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
-import ChartsCard from "~/components/dash/ChartsCard";
+import ChartsCard from "~/components/cards/ChartsCard";
 import DashNav from "~/components/dash/DashNav";
-import StatsCard from "~/components/dash/StatsCard";
+import StatsCard from "~/components/cards/StatsCard";
 
 const Dash: React.FC = (props) => {
 
