@@ -40,7 +40,6 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
             data.push(blankSet)
         }
         setSetsData(prevSetsData => [...prevSetsData, ...data])
-        console.log(setsData)
     }
 
     // TODO: Refactor Into Generic HandleChange Util
