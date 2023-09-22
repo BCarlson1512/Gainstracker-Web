@@ -45,18 +45,41 @@ export const workoutLogRouter = createTRPCRouter({
         }
     }),
     getID: protectedProcedure
-    .input(z.string())
+    .input(z.object({id: z.string()}))
     .query(async({ctx,input}) => {
         try {
             const workout = await prisma.workoutLog.findFirst({
                 where: {
-                    id: input,
+                    id: input.id,
                 },
-                include: {
+                include:{
+                    sets:true,
+                }
+            })
+            const sets = await prisma.set.findMany({
+                where: {
+                    workoutId: workout.id
+                },
+                select: {
+                    exerciseId: true
+                }
+            })
+            const eids = sets.map(set =>{
+                const newSet = {id: set.exerciseId}
+                set.exerciseId = undefined;
+                return newSet
+            })
+            const exercises = await prisma.exercise.findMany({
+                where: {
+                    OR: [
+                        ...eids
+                    ]
+                },
+                include:{
                     sets: true
                 }
             })
-            return workout;
+            return {workoutData: workout, exercises: exercises};
         } catch (err) {
             return {err: err}
         }
