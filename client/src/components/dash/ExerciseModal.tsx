@@ -16,10 +16,9 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
     const {id, numOfSets} = exerciseData
     const {setsData, setSetsData, setRemovedSets} = useContext(SetsContext)
     const {uid} = useUsers();
-    const [generatedSets, setGeneratedSets] = useState<boolean>(false);
 
-    const generateSetObject = (setData:Set | undefined, uid: string):Set => {
-
+    const generateSetObject = (uid: string, eid:string, index:number):Set => {
+        const setData = exerciseData?.sets ? exerciseData.sets[index] : undefined;
         return {
             weight: setData?.weight ? setData.weight : 0, 
             reps: setData?.reps ? setData.reps : 0, 
@@ -31,12 +30,11 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
     }
 
     // populates sets state
-    const generateSetsData = (n: number|undefined, eid: string) => {
-        if (n === undefined || eid === undefined || generatedSets) return;
+    const generateSetsData = (n: number|undefined, eid: string|undefined) => {
+        if (n === undefined || eid === undefined) return;
         const data: Set[] = []
         for (let i = 0; i < n; i++) {
-            const setData = exerciseData?.sets[i];
-            const blankSet = generateSetObject(setData, uid)
+            const blankSet = generateSetObject(uid, eid, i)
             data.push(blankSet)
         }
         setSetsData(prevSetsData => [...prevSetsData, ...data])

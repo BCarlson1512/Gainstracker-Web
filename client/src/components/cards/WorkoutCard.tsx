@@ -1,7 +1,8 @@
+import type PlanData from "~/types/PlanData";
 import ExerciseModal from "../dash/ExerciseModal";
 
 type WorkoutCardProps = {
-    workoutData: any[]
+    workoutData: PlanData
     exerciseData: any[]
 }
 
@@ -10,6 +11,9 @@ export const WorkoutCard:React.FC<WorkoutCardProps> = ({workoutData, exerciseDat
     return (
         <div className="flex-col-centered">
             <h1>{name}</h1>
+            {notes && (
+                <p>{notes}</p>
+            )}
             {exerciseData.map((exercise, index) => {
                 return <ExerciseModal key={index} index={index} exerciseData={exercise}/>
             })}

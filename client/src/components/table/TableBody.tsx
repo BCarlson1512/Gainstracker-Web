@@ -6,9 +6,26 @@ import { MdOutlineModeEditOutline } from "react-icons/md"
 import type { Column } from "~/types/Column"
 import { api } from "~/utils/api"
 
+type TableSet = {
+    id: string;
+    exerciseId: string;
+    workoutId: string;
+    userId: string | null;
+    weight: number;
+    reps: number;
+    unit: string;
+    notes: string | null;
+}
+
+type TableData = {
+    id: string
+    dateCreated: string
+    sets: TableSet[]
+}
+
 type TableBodyProps = {
     columns: Column[]
-    tableData: any[]
+    tableData: TableData[]
 }
 
 export const TableBody:React.FC<TableBodyProps> = ({columns, tableData}) => {
@@ -20,7 +37,9 @@ export const TableBody:React.FC<TableBodyProps> = ({columns, tableData}) => {
                     className="border-b border-white text-white" 
                     key={data.id}>
                         {columns.map(({accessor}) => {
-                            if (accessor === "dateCreated") {
+                            if (!accessor) {
+
+                            } else if (accessor === "dateCreated") {
                                 const tData = data[accessor] ? data[accessor].toString().substring(4, 15): "--"
                                 return <td className="px-6 py-4 font-medium whitespace-nowrap" key={accessor}>{tData}</td>
                             } else if (accessor === "action"){

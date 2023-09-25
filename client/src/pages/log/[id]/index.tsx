@@ -14,10 +14,10 @@ const viewTableCols = [
 
 const View:React.FC = () => {
     const router = useRouter()
-    const {id} = router.query
+    const id = router.query.id
     if (!id) return <div>Loading...</div>
 
-    const {data,isLoading} = api.workoutLog.getID.useQuery({id: id})
+    const {data,isLoading} = api.workoutLog.getID.useQuery({id: id as string})
 
     return (
         <>
@@ -26,9 +26,8 @@ const View:React.FC = () => {
             </Head>
             <DashNav />
             <main className="flex-col-centered main-bg min-h-screen w-screen">
-                {(!isLoading && data) && 
+                {(!isLoading && data?.exercises) && 
                 (
-                    
                     <Table 
                     data={data.exercises} 
                     columns={viewTableCols}

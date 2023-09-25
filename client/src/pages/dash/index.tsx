@@ -4,7 +4,7 @@ import ChartsCard from "~/components/cards/ChartsCard";
 import DashNav from "~/components/dash/DashNav";
 import StatsCard from "~/components/cards/StatsCard";
 
-const Dash: React.FC = (props) => {
+const Dash: React.FC = () => {
 
     return(
         <>

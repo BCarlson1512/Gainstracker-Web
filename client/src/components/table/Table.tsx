@@ -14,8 +14,23 @@ type TableColumn = {
     sortable: boolean
 }
 
+type TableSet = {
+    id: string;
+    exerciseId: string;
+    workoutId: string;
+    userId: string | null;
+    weight: number;
+    reps: number;
+    unit: string;
+    notes: string | null;
+}
+
+type TableData = {
+    sets: TableSet[]
+}
+
 type TableProps = {
-    data: any[]
+    data: TableData[]
     columns?: TableColumn[]
 }
 

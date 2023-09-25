@@ -29,8 +29,10 @@ export const useExercises = () => {
         setPlanExercises(exercises)
     }
 
+    /* eslint-disable */
     useEffect(() => {
     }, [planExercises])
+    /* eslint-enable */
 
     return {planExercises, removeExercise, handleClick, mutateExerciseData}
 }

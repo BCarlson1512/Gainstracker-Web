@@ -46,7 +46,7 @@ export const workoutLogRouter = createTRPCRouter({
     }),
     getID: protectedProcedure
     .input(z.object({id: z.string()}))
-    .query(async({ctx,input}) => {
+    .query(async({input}) => {
         try {
             const workout = await prisma.workoutLog.findFirst({
                 where: {
@@ -116,7 +116,7 @@ export const workoutLogRouter = createTRPCRouter({
     }),
     deleteLog: protectedProcedure
     .input(z.object({id: z.string()}))
-    .mutation(async({ctx,input}) => {
+    .mutation(async({input}) => {
         try {
             const deletedWorkout = await prisma.workoutLog.delete({
                 where: {

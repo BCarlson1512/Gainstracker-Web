@@ -6,10 +6,10 @@ import { api } from "~/utils/api";
 
 const Edit:React.FC = () => {
     const router = useRouter()
-    const {id} = router.query
+    const id = router.query.id
     if (!id) return <div>Loading...</div>
 
-    const {workoutData, exercises} = api.workoutLog.getID.useQuery({id: id})
+    const {data,isLoading} = api.workoutLog.getID.useQuery({id: id as string})
     
     return (
         <>
@@ -18,8 +18,10 @@ const Edit:React.FC = () => {
             </Head>
             <DashNav />
             <main className="flex-col-centered main-bg min-h-screen w-screen">
-                {workoutData && (
-                    <WorkoutCard workoutData={workoutData} exerciseData={exercises}/>
+                {(!isLoading && data?.workoutData && data?.exercises) && (
+                    <WorkoutCard 
+                    workoutData={data.workoutData} 
+                    exerciseData={data.exercises}/>
                 )}
             </main>
         </>

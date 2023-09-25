@@ -25,7 +25,7 @@ const Log: React.FC = () => {
             setRemovedSets([])
             setSelectedPlan(undefined)
         },
-        onError: (err) => {
+        onError: () => {
             toast.error("Failed to create log")
         }
     })

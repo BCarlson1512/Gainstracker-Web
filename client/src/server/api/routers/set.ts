@@ -20,7 +20,7 @@ export const setRouter = createTRPCRouter({
     }),
     createSets: protectedProcedure
     .input(z.object({sets: z.array(setSchema)}))
-    .mutation(async({ctx, input}) => {
+    .mutation(async({input}) => {
         const {sets} = input;
         try {
             const createdSets = await prisma.set.createMany({
@@ -35,7 +35,7 @@ export const setRouter = createTRPCRouter({
     }),
     updateSet: protectedProcedure
     .input(z.object({sid: z.string(), set: setSchema}))
-    .mutation(async({ctx, input}) => {
+    .mutation(async({input}) => {
         const {sid, set} = input;
         try {
             const dbSet = await prisma.set.update({
@@ -54,7 +54,7 @@ export const setRouter = createTRPCRouter({
     }),
     deleteSets: protectedProcedure
     .input(z.object({setIds: z.array(z.string())}))
-    .mutation(async({ctx, input}) => {
+    .mutation(async({input}) => {
         const {setIds} = input;
         try {
             const deletedSets = await prisma.set.deleteMany({
