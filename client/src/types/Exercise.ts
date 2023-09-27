@@ -1,4 +1,4 @@
-import type Set from "./Set";
+import type WorkoutSet from "./WorkoutSet";
 
 type Exercise = {
     id?: string,
@@ -6,6 +6,6 @@ type Exercise = {
     muscleGrouping: string,
     numOfSets?: number,
     trainingId?: string | null,
-    sets?: Set[]
+    sets?: WorkoutSet[]
 }
 export default Exercise;
