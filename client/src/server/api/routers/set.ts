@@ -7,29 +7,15 @@ export const setRouter = createTRPCRouter({
     getByAuthedUID: protectedProcedure
     .query(async({ctx}) => {
         try {
+            const {auth} = ctx
             const userSets = await prisma.set.findMany({
                 where: {
-                    userId: ctx.userId
+                    userId: auth.userId
                 },
                 take: 100
             })
             return userSets;
         }catch(err) {
-            return {err: err, msg: ""}
-        }
-    }),
-    createSets: protectedProcedure
-    .input(z.object({sets: z.array(setSchema)}))
-    .mutation(async({input}) => {
-        const {sets} = input;
-        try {
-            const createdSets = await prisma.set.createMany({
-                data: {
-                    ...sets
-                }
-            })
-            return createdSets;
-        }catch (err) {
             return {err: err, msg: ""}
         }
     }),

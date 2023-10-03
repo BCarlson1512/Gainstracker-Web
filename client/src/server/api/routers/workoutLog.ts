@@ -41,7 +41,6 @@ export const workoutLogRouter = createTRPCRouter({
             })
             return workouts
         } catch (err) {
-            return {err: err}
         }
     }),
     getID: protectedProcedure
@@ -56,6 +55,9 @@ export const workoutLogRouter = createTRPCRouter({
                     sets:true,
                 }
             })
+            if (!workout) {
+                throw new Error(`Workout not found`)
+            }
             const sets = await prisma.set.findMany({
                 where: {
                     workoutId: workout.id
@@ -66,7 +68,6 @@ export const workoutLogRouter = createTRPCRouter({
             })
             const eids = sets.map(set =>{
                 const newSet = {id: set.exerciseId}
-                set.exerciseId = undefined;
                 return newSet
             })
             const exercises = await prisma.exercise.findMany({
@@ -109,11 +110,13 @@ export const workoutLogRouter = createTRPCRouter({
             return {err: err, ctx: sets}
         }
     }),
+    /* TODO: Implement edit log on frontend
     updateLog: protectedProcedure
     .input(workoutSchema)
     .mutation(async({ctx,input}) => {
         return {};
     }),
+    */
     deleteLog: protectedProcedure
     .input(z.object({id: z.string()}))
     .mutation(async({input}) => {
