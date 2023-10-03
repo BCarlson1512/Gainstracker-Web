@@ -26,6 +26,9 @@ const View:React.FC = () => {
             </Head>
             <DashNav />
             <main className="flex-col-centered main-bg min-h-screen w-screen">
+                {(isLoading) && (
+                    <div>Loading...</div>
+                )}
                 {(!isLoading && data?.exercises) && 
                 (
                     <Table 

@@ -4,24 +4,8 @@ import { AiOutlineDelete } from "react-icons/ai"
 import { CiViewList } from "react-icons/ci"
 import { MdOutlineModeEditOutline } from "react-icons/md"
 import type { Column } from "~/types/Column"
+import type { TableData } from "~/types/Table"
 import { api } from "~/utils/api"
-
-type TableSet = {
-    id: string;
-    exerciseId: string;
-    workoutId: string;
-    userId: string | null;
-    weight: number;
-    reps: number;
-    unit: string;
-    notes: string | null;
-}
-
-type TableData = {
-    id: string
-    dateCreated: string
-    sets: TableSet[]
-}
 
 type TableBodyProps = {
     columns: Column[]
@@ -40,13 +24,15 @@ export const TableBody:React.FC<TableBodyProps> = ({columns, tableData}) => {
                             if (!accessor) {
 
                             } else if (accessor === "dateCreated") {
-                                const tData = data[accessor] ? data[accessor].toString().substring(4, 15): "--"
+                                const tData = data[accessor] ? data[accessor]?.toString().substring(4, 15): "--"
                                 return <td className="px-6 py-4 font-medium whitespace-nowrap" key={accessor}>{tData}</td>
                             } else if (accessor === "action"){
                                 return <ActionRow key={accessor} id={data.id} />
                             }else {
-                                const tData = data[accessor] ? data[accessor] : "--"
-                                return <td className="px-6 py-4 font-medium whitespace-nowrap" key={accessor}>{tData}</td>
+                                const tData = data[accessor as keyof TableData] ? data[accessor as keyof TableData] : "--";
+                                if (typeof tData === "string") {
+                                    return <td className="px-6 py-4 font-medium whitespace-nowrap" key={accessor}>{tData}</td>;
+                                }
                             }
                         })}
                     </tr>

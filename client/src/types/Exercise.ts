@@ -4,7 +4,7 @@ type Exercise = {
     id?: string,
     name: string,
     muscleGrouping: string,
-    numOfSets?: number,
+    numOfSets: number,
     trainingId?: string | null,
     sets?: WorkoutSet[]
 }

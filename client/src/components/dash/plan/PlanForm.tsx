@@ -62,6 +62,10 @@ export const PlanForm: React.FC<PlanFormProps> = (props) => {
         if (isCreateMode) {
             mutate({name:planName, id: "", exercises: planExercises})
         } else {
+            if (!currentPlan?.id) {
+                toast.error("Please Select a plan")
+                return;
+            }
             mutate({id: currentPlan?.id, name:planName, exercises: planExercises})
             removedExercises.length > 0 ? deleteExercises.mutate({removedExerciseIds: removedExercises}) : null
         }

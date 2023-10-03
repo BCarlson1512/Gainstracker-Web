@@ -1,4 +1,5 @@
 import { useSortableTable } from "~/hooks/useSortableTable"
+import type { TableColumn, TableData } from "~/types/Table"
 import { TableBody } from "./TableBody"
 import { TableHead } from "./TableHead"
 
@@ -7,27 +8,6 @@ const defaultTableCols =  [
     {label: "Date", accessor: "dateCreated", sortable: true},
     {label: "Action", accessor: "action", sortable: false}
 ]
-
-type TableColumn = {
-    label: string
-    accessor: string
-    sortable: boolean
-}
-
-type TableSet = {
-    id: string;
-    exerciseId: string;
-    workoutId: string;
-    userId: string | null;
-    weight: number;
-    reps: number;
-    unit: string;
-    notes: string | null;
-}
-
-type TableData = {
-    sets: TableSet[]
-}
 
 type TableProps = {
     data: TableData[]
