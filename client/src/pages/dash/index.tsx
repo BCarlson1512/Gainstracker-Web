@@ -7,9 +7,15 @@ import { api } from "~/utils/api";
 
 const Dash: React.FC = () => {
 
+    const totalSetCounts = api.stats.getTotalSetsCompleted.useQuery()
+    const weeklySetCounts = api.stats.getWeeklySetsCompleted.useQuery()
+
     const weeklyWorkout = api.stats.getWeeklyWorkoutCount.useQuery()
-    const setCounts = api.stats.getTotalSetsCompleted.useQuery()
+    const totalWorkout = api.stats.getLifetimeWorkouts.useQuery()
+
     const weightLifted = api.stats.getTotalWeightLifted.useQuery()
+    const weeklyWeightLifted = api.stats.getWeeklyWeightLifted.useQuery()
+
     return(
         <>
             <Head>
@@ -29,26 +35,40 @@ const Dash: React.FC = () => {
                             </Link>
                             <Link
                                 className="btn-dash-invert"
-                                href="/workouts"
+                                href="/dash/workouts"
                             >
                                 View Existing Workouts
                             </Link>
                             <Link
                                 className="btn-dash-reg"
-                                href="/create"
+                                href="/dash/create"
                             >
                                 Create New Workout
                             </Link>
                         </div>
                     </div>
                     <div className="flex flex-row justify-between items-start ml-14 px-10">
-                        <div className="grid grid-rows-2 grid-cols-2">
-                            <div className="col-span-2">
-                                <StatsCard img={"/static/barbell-icon.svg"} statsNum={weightLifted.data} statsMsg={"Total Lbs Lifted"} isLoading={weightLifted.isLoading}/>
+                        <div className="flex-col-centered">
+                            <h2 className="text-2xl tracking-tight font-semibold text-white">This Week</h2>
+                            <div className="grid grid-rows-2 grid-cols-2">
+                                <div className="col-span-2">
+                                    <StatsCard img={"/static/barbell-icon.svg"} statsNum={weeklyWeightLifted.data} statsMsg={"Total Lbs Lifted"} isLoading={weeklyWeightLifted.isLoading}/>
+                                </div>
+                                <StatsCard img={"/static/barbell-icon.svg"} statsNum={weeklyWorkout.data} statsMsg={"Workouts"} isLoading={weeklyWorkout.isLoading}/>
+                                <StatsCard img={"/static/barbell-icon.svg"} statsNum={weeklySetCounts.data} statsMsg={"Sets Completed"} isLoading={weeklySetCounts.isLoading}/>
                             </div>
-                            <StatsCard img={"/static/barbell-icon.svg"} statsNum={weeklyWorkout.data} statsMsg={"Workouts This Week"} isLoading={weeklyWorkout.isLoading}/>
-                            <StatsCard img={"/static/barbell-icon.svg"} statsNum={setCounts.data} statsMsg={"Sets Completed"} isLoading={setCounts.isLoading}/>
                         </div>
+                        <div className="flex-col-centered">
+                            <h2 className="text-2xl tracking-tight font-semibold text-white">Lifetime</h2>
+                            <div className="grid grid-rows-2 grid-cols-2">
+                                <div className="col-span-2">
+                                    <StatsCard img={"/static/barbell-icon.svg"} statsNum={weightLifted.data} statsMsg={"Total Lbs Lifted"} isLoading={weightLifted.isLoading}/>
+                                </div>
+                                <StatsCard img={"/static/barbell-icon.svg"} statsNum={totalWorkout.data} statsMsg={"Workouts"} isLoading={totalWorkout.isLoading}/>
+                                <StatsCard img={"/static/barbell-icon.svg"} statsNum={totalSetCounts.data} statsMsg={"Sets Completed"} isLoading={totalSetCounts.isLoading}/>
+                            </div>
+                        </div>
+
                         <div className="flex-col-center">
                             <div className="grid grid-cols-3 gap-4 px-4 mr-6">
                                 <div className="col-span-3">
