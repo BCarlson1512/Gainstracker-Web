@@ -58,7 +58,3 @@
 
 - See an issue with the app? Make an issue on the respective project (Web/Mobile)
 - Issues already exist and you want to jump in? Pick up an issue and make a PR
-
-## Build/Run
-
-- A live build of the project will be available soon, stay tuned for a url
