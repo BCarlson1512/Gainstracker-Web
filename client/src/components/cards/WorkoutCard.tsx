@@ -9,10 +9,9 @@ type WorkoutCardProps = {
 
 export const WorkoutCard:React.FC<WorkoutCardProps> = ({workoutData, exerciseData}) => {
     const {name, notes} = workoutData;
-    console.log(exerciseData)
     return (
-        <div className="flex-col-centered">
-            <h1>{name}</h1>
+        <div className="flex-col-centered py-4 my-4">
+            <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-[5rem]">{name}</h1>
             {notes && (
                 <p>{notes}</p>
             )}

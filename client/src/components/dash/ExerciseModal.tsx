@@ -79,8 +79,8 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
 
     return(
         <div className="flex flex-col p-8 m-2 items-center justify-center">
-            <div className="text-white">
-                <h2>{exerciseData.name}</h2>
+            <div className="text-white text-xl font-semibold tracking-tight">
+                <h2 >{exerciseData.name}</h2>
             </div>
             <div className="border rounded-md text-center p-2 m-2 text-white drop-shadow-sm hover:bg-[#33096e] hover:border-[#33096e] transition ease-in" onClick={() => addSet()}>
                 Add a set
