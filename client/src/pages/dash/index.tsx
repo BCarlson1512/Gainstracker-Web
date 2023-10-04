@@ -3,9 +3,13 @@ import Link from "next/link";
 import ChartsCard from "~/components/cards/ChartsCard";
 import DashNav from "~/components/dash/DashNav";
 import StatsCard from "~/components/cards/StatsCard";
+import { api } from "~/utils/api";
 
 const Dash: React.FC = () => {
 
+    const weeklyWorkout = api.stats.getWeeklyWorkoutCount.useQuery()
+    const setCounts = api.stats.getTotalSetsCompleted.useQuery()
+    const weightLifted = api.stats.getTotalWeightLifted.useQuery()
     return(
         <>
             <Head>
@@ -40,10 +44,10 @@ const Dash: React.FC = () => {
                     <div className="flex flex-row justify-between items-start ml-14 px-10">
                         <div className="grid grid-rows-2 grid-cols-2">
                             <div className="col-span-2">
-                                <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Lbs Lifted"}/>
+                                <StatsCard img={"/static/barbell-icon.svg"} statsNum={weightLifted.data} statsMsg={"Total Lbs Lifted"} isLoading={weightLifted.isLoading}/>
                             </div>
-                            <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Workouts This Week"}/>
-                            <StatsCard img={"/static/barbell-icon.svg"} statsNum={0} statsMsg={"Sets Completed"}/>
+                            <StatsCard img={"/static/barbell-icon.svg"} statsNum={weeklyWorkout.data} statsMsg={"Workouts This Week"} isLoading={weeklyWorkout.isLoading}/>
+                            <StatsCard img={"/static/barbell-icon.svg"} statsNum={setCounts.data} statsMsg={"Sets Completed"} isLoading={setCounts.isLoading}/>
                         </div>
                         <div className="flex-col-center">
                             <div className="grid grid-cols-3 gap-4 px-4 mr-6">
