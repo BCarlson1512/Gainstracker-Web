@@ -5,7 +5,7 @@
 - Design UI
   - ~~Create Workouts~~
   - ~~Log Workouts~~
-  - View Workouts
+  - ~~View Workouts~~
   - User Statistics
 - ~~Design API~~
 - ~~Settle on DB for project~~

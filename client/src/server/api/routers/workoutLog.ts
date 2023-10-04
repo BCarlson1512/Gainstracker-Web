@@ -121,12 +121,18 @@ export const workoutLogRouter = createTRPCRouter({
     .input(z.object({id: z.string()}))
     .mutation(async({input}) => {
         try {
-            const deletedWorkout = await prisma.workoutLog.delete({
+            const deleteSets = prisma.set.deleteMany({
+                where: {
+                    workoutId: input.id
+                }
+            })
+            const deletedWorkout = prisma.workoutLog.delete({
                 where: {
                     id: input.id,
                 }
             })
-            return deletedWorkout;
+            const transaction = await prisma.$transaction([deleteSets, deletedWorkout])
+            return transaction;
         } catch (err) {
             return {err: err}
         }
