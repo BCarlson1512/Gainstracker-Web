@@ -74,6 +74,7 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
     }
 
     useEffect(() => {
+        if (!uid) return
         generateSetsData(numOfSets, id)
     }, [numOfSets, id, uid])
 
