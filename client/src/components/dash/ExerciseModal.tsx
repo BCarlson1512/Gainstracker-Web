@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import type Exercise from "~/types/Exercise";
 import type Set from "~/types/Set";
 import SetInput from "./inputs/SetsInput";
 import { SetsContext } from "../../context/SetsContext"
-import { v1 as uuidv1 } from 'uuid';
 import { useUsers } from "~/hooks/useUsers";
+import { v1 as uuidv1 } from 'uuid';
 
 type ExerciseModalProps = {
     exerciseData: Exercise,
@@ -16,68 +16,44 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
     const {id, numOfSets} = exerciseData
     const {setsData, setSetsData, setRemovedSets} = useContext(SetsContext)
     const {uid} = useUsers();
-    const [generatedSets, setGeneratedSets] = useState<boolean>(false);
+
+    const generateSetObject = (uid: string, eid:string, index:number):Set => {
+        const setData = exerciseData?.sets ? exerciseData.sets[index] : undefined;
+        return {
+            weight: setData?.weight ? setData.weight : 0, 
+            reps: setData?.reps ? setData.reps : 0, 
+            unit: setData?.unit ? setData.unit : "lbs", 
+            exerciseId: setData?.exerciseId ? setData.exerciseId : eid, 
+            sid: uuidv1(), 
+            userId: setData?.userId ? setData.userId : uid,
+            notes: setData?.notes ? setData.notes : ""
+        }
+    }
 
     // populates sets state
-    const generateSetsData = (n: number|undefined, eid: string) => {
-        if (n === undefined || eid === undefined || generatedSets) return;
+    const generateSetsData = (n: number|undefined, eid: string|undefined) => {
+        if (n === undefined || eid === undefined) return;
         const data: Set[] = []
         for (let i = 0; i < n; i++) {
-            const blankSet = {weight: 0, reps: 0, unit: "lbs", exerciseId: eid, sid: uuidv1(), userId: uid}
+            const blankSet = generateSetObject(uid, eid, i)
             data.push(blankSet)
         }
         setSetsData(prevSetsData => [...prevSetsData, ...data])
-        setGeneratedSets(true)
     }
 
-    // TODO: Refactor Into Generic HandleChange Util
-    const handleRepsChange = (value:number, set_id:string) => {
+    const handleChange = (evt: React.ChangeEvent<HTMLInputElement|HTMLSelectElement>, set_id:string) => {
         const updateIndex = setsData.findIndex(set => set.sid === set_id)
-        if (updateIndex) {
-            const updatedSet = {...setsData[updateIndex], reps: value}
+        const foundSet = setsData[updateIndex]
+        if (foundSet) {
+            const isNumeric = evt.target.name === 'weight' || evt.target.name === 'reps'
+            const updatedSet = {
+                ...foundSet,
+                [evt.target.name]: isNumeric ? Number(evt.target.value) :evt.target.value
+            }
             const newSets = [
                 ...setsData.slice(0, updateIndex),
                 updatedSet,
-                ...setsData.slice(updateIndex +1)
-            ]
-            setSetsData(newSets)
-        }
-    }
-
-    const handleWeightChange = (value:number, set_id:string) => {
-        const updateIndex = setsData.findIndex(set => set.sid === set_id)
-        if (updateIndex) {
-            const updatedSet = {...setsData[updateIndex], weight: value}
-            const newSets = [
-                ...setsData.slice(0, updateIndex),
-                updatedSet,
-                ...setsData.slice(updateIndex +1)
-            ]
-            setSetsData(newSets)
-        }
-    }
-
-    const handleNotesChange = (value:string, set_id:string) => {
-        const updateIndex = setsData.findIndex(set => set.sid === set_id)
-        if (updateIndex) {
-            const updatedSet = {...setsData[updateIndex], notes: value}
-            const newSets = [
-                ...setsData.slice(0, updateIndex),
-                updatedSet,
-                ...setsData.slice(updateIndex +1)
-            ]
-            setSetsData(newSets)
-        }
-    }
-
-    const handleSelect = (value: string, set_id:string) => {
-        const updateIndex = setsData.findIndex(set => set.sid === set_id)
-        if (updateIndex) {
-            const updatedSet = {...setsData[updateIndex], unit: value}
-            const newSets = [
-                ...setsData.slice(0, updateIndex),
-                updatedSet,
-                ...setsData.slice(updateIndex +1)
+                ...setsData.slice(updateIndex + 1)
             ]
             setSetsData(newSets)
         }
@@ -92,7 +68,8 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
     }
 
     const addSet = () => {
-        const newSet:Set = {weight: 0, reps: 0, unit: "lbs", exerciseId: id, userId: uid}
+        if (!uid || !id) return
+        const newSet:Set = {weight: 0, reps: 0, unit: "lbs", exerciseId: id, userId: uid, notes: ""}
         setSetsData([...setsData, newSet])
     }
 
@@ -112,11 +89,9 @@ const ExerciseModal: React.FC<ExerciseModalProps> = (props) => {
                 {setsData.filter(set => set.exerciseId === exerciseData.id).map((set, index) => 
                 <SetInput 
                     key={index}
+                    data={set}
                     index={set.sid!}
-                    handleRepsChange={handleRepsChange}
-                    handleWeightChange={handleWeightChange}
-                    handleNotesChange={handleNotesChange}
-                    handleSelectChange={handleSelect}
+                    handleChange={handleChange}
                     handleRemove={removeSet}
                 />)
                 }

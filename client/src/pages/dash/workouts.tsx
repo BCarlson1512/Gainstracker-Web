@@ -7,8 +7,6 @@ const workouts: React.FC = () => {
     {/* TODO: 
         Styling
         Delete Log
-        Edit Log
-        View Log
     */}
 
     const {data, isLoading} = api.workoutLog.getAuthedTableData.useQuery()

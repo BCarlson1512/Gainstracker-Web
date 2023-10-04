@@ -7,9 +7,10 @@ export const setRouter = createTRPCRouter({
     getByAuthedUID: protectedProcedure
     .query(async({ctx}) => {
         try {
+            const {auth} = ctx
             const userSets = await prisma.set.findMany({
                 where: {
-                    userId: ctx.userId
+                    userId: auth.userId
                 },
                 take: 100
             })
@@ -18,24 +19,9 @@ export const setRouter = createTRPCRouter({
             return {err: err, msg: ""}
         }
     }),
-    createSets: protectedProcedure
-    .input(z.object({sets: z.array(setSchema)}))
-    .mutation(async({ctx, input}) => {
-        const {sets} = input;
-        try {
-            const createdSets = await prisma.set.createMany({
-                data: {
-                    ...sets
-                }
-            })
-            return createdSets;
-        }catch (err) {
-            return {err: err, msg: ""}
-        }
-    }),
     updateSet: protectedProcedure
     .input(z.object({sid: z.string(), set: setSchema}))
-    .mutation(async({ctx, input}) => {
+    .mutation(async({input}) => {
         const {sid, set} = input;
         try {
             const dbSet = await prisma.set.update({
@@ -54,7 +40,7 @@ export const setRouter = createTRPCRouter({
     }),
     deleteSets: protectedProcedure
     .input(z.object({setIds: z.array(z.string())}))
-    .mutation(async({ctx, input}) => {
+    .mutation(async({input}) => {
         const {setIds} = input;
         try {
             const deletedSets = await prisma.set.deleteMany({

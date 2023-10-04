@@ -41,22 +41,46 @@ export const workoutLogRouter = createTRPCRouter({
             })
             return workouts
         } catch (err) {
-            return {err: err}
         }
     }),
     getID: protectedProcedure
-    .input(z.string())
-    .query(async({ctx,input}) => {
+    .input(z.object({id: z.string()}))
+    .query(async({input}) => {
         try {
             const workout = await prisma.workoutLog.findFirst({
                 where: {
-                    id: input,
+                    id: input.id,
                 },
-                include: {
+                include:{
+                    sets:true,
+                }
+            })
+            if (!workout) {
+                throw new Error(`Workout not found`)
+            }
+            const sets = await prisma.set.findMany({
+                where: {
+                    workoutId: workout.id
+                },
+                select: {
+                    exerciseId: true
+                }
+            })
+            const eids = sets.map(set =>{
+                const newSet = {id: set.exerciseId}
+                return newSet
+            })
+            const exercises = await prisma.exercise.findMany({
+                where: {
+                    OR: [
+                        ...eids
+                    ]
+                },
+                include:{
                     sets: true
                 }
             })
-            return workout;
+            return {workoutData: workout, exercises: exercises};
         } catch (err) {
             return {err: err}
         }
@@ -86,14 +110,16 @@ export const workoutLogRouter = createTRPCRouter({
             return {err: err, ctx: sets}
         }
     }),
+    /* TODO: Implement edit log on frontend
     updateLog: protectedProcedure
     .input(workoutSchema)
     .mutation(async({ctx,input}) => {
         return {};
     }),
+    */
     deleteLog: protectedProcedure
     .input(z.object({id: z.string()}))
-    .mutation(async({ctx,input}) => {
+    .mutation(async({input}) => {
         try {
             const deletedWorkout = await prisma.workoutLog.delete({
                 where: {

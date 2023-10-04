@@ -24,6 +24,7 @@ const DashNav: React.FC = () => {
 type SideBarIconProps = {
     href: string,
     tooltip?: string,
+    // eslint-disable-next-line
     icon: any
 }
 

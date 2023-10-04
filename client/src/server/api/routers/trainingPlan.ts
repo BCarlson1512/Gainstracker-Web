@@ -5,8 +5,8 @@ import { trainingPlanSchema } from "../schemas/trainingPlan";
 import { upsertExercises } from "~/utils/exercises/exercises";
 
 export const trainingPlanRouter = createTRPCRouter({
-    getAll: publicProcedure
-    .query(async({ctx}) => {
+    getAll: protectedProcedure
+    .query(async() => {
         const trainingPlans = await prisma.trainingPlan.findMany({
             include: {
                 exercises: true
@@ -31,7 +31,7 @@ export const trainingPlanRouter = createTRPCRouter({
     }),
     getByUserID: publicProcedure
     .input(z.string())
-    .query(async({ctx, input}) => {
+    .query(async({input}) => {
         const trainingPlan = await prisma.trainingPlan.findMany({
             where: {
                 authorId: input,
@@ -45,7 +45,7 @@ export const trainingPlanRouter = createTRPCRouter({
     }),
     getID: publicProcedure
     .input(z.string())
-    .query(async({ctx, input}) => {
+    .query(async({input}) => {
         const trainingPlan = await prisma.trainingPlan.findFirst({
             where: {
                 id: input
@@ -82,7 +82,7 @@ export const trainingPlanRouter = createTRPCRouter({
     .input(z.object({
         id: z.string()
     }))
-    .mutation(async({ctx, input}) => {
+    .mutation(async({input}) => {
         try {
             const deletedTrainingPlan = await prisma.trainingPlan.delete({
                 where: {
@@ -98,7 +98,7 @@ export const trainingPlanRouter = createTRPCRouter({
     .input(z.object({
             removedExerciseIds: z.array(z.string())
         }))
-    .mutation (async({ctx, input}) => {
+    .mutation (async({input}) => {
         const {removedExerciseIds} = input
         try {
             const dbExercisesRemoved = await prisma.exercise.deleteMany({
@@ -115,7 +115,7 @@ export const trainingPlanRouter = createTRPCRouter({
     }),
     updateTrainingPlan: protectedProcedure
     .input(trainingPlanSchema)
-    .mutation(async({ctx, input}) => {
+    .mutation(async({input}) => {
         const {id, exercises, name} = input;
         try {
             const trainingPlan = await prisma.trainingPlan.update({
