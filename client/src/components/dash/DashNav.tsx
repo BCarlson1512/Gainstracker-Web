@@ -12,7 +12,7 @@ const DashNav: React.FC = () => {
             <SideBarIcon href="/dash" icon={<BiHomeCircle size="28"/>} tooltip="Dashboard"/>
             <SideBarIcon href="/dash/create" icon={<BsPlusCircle size="28"/>} tooltip="create workout"/>
             <SideBarIcon href="/dash/workouts" icon={<CiViewList size="28"/>} tooltip="view workout"/>
-            <SideBarIcon href="/dash/plan" icon={<GrPlan size="28"/>} tooltip="view plans"/>
+            <SideBarIcon href="/dash/plans" icon={<GrPlan size="28"/>} tooltip="view plans"/>
             <SideBarIcon href="/dash/edit" icon={<BiPencil size="28"/>} tooltip="edit workout"/>
             <SideBarIcon href="/log" icon={<BiNotepad size="28"/>} tooltip="log workout"/>
             <div className="sidebar-icon">
