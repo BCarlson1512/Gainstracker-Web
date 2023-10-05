@@ -24,7 +24,7 @@ const Plans: React.FC = () => {
                 </div>
                 {(!isLoading && data) && (
                     <div className="relative overflow-x-auto">
-                        <Table columns={TableColumns} data={data}/>
+                        <Table columns={TableColumns} data={data} type={"plan"}/>
                     </div>
                 )}
             </main>
