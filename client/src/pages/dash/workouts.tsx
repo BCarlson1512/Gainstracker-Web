@@ -4,11 +4,6 @@ import { Table } from "~/components/table/Table";
 import { api } from "~/utils/api";
 
 const workouts: React.FC = () => {
-    {/* TODO: 
-        Styling
-        Delete Log
-    */}
-
     const {data, isLoading} = api.workoutLog.getAuthedTableData.useQuery()
 
     return(
