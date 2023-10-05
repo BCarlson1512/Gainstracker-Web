@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {BsPlusCircle, BsMoonStarsFill} from 'react-icons/bs'
 import {BiHomeCircle, BiNotepad, BiPencil} from 'react-icons/bi'
+import {GrPlan} from 'react-icons/gr'
 import {CiViewList} from 'react-icons/ci'
 import { UserButton } from "@clerk/nextjs";
 
@@ -11,6 +12,7 @@ const DashNav: React.FC = () => {
             <SideBarIcon href="/dash" icon={<BiHomeCircle size="28"/>} tooltip="Dashboard"/>
             <SideBarIcon href="/dash/create" icon={<BsPlusCircle size="28"/>} tooltip="create workout"/>
             <SideBarIcon href="/dash/workouts" icon={<CiViewList size="28"/>} tooltip="view workout"/>
+            <SideBarIcon href="/dash/plans" icon={<GrPlan size="28"/>} tooltip="view plans"/>
             <SideBarIcon href="/dash/edit" icon={<BiPencil size="28"/>} tooltip="edit workout"/>
             <SideBarIcon href="/log" icon={<BiNotepad size="28"/>} tooltip="log workout"/>
             <div className="sidebar-icon">

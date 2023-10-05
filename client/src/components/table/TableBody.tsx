@@ -10,9 +10,10 @@ import { api } from "~/utils/api"
 type TableBodyProps = {
     columns: Column[]
     tableData: TableData[]
+    type?: string
 }
 
-export const TableBody:React.FC<TableBodyProps> = ({columns, tableData}) => {
+export const TableBody:React.FC<TableBodyProps> = ({columns, tableData, type}) => {
     return (
         <tbody>
             {tableData.map((data) => {
@@ -27,7 +28,7 @@ export const TableBody:React.FC<TableBodyProps> = ({columns, tableData}) => {
                                 const tData = data[accessor] ? data[accessor]?.toString().substring(4, 15): "--"
                                 return <td className="px-6 py-4 font-medium whitespace-nowrap" key={accessor}>{tData}</td>
                             } else if (accessor === "action"){
-                                return <ActionRow key={accessor} id={data.id} />
+                                return <ActionRow key={accessor} id={data.id} type={type} />
                             }else {
                                 const tData = data[accessor as keyof TableData] ? data[accessor as keyof TableData] : "--";
                                 if (typeof tData === "string") {
@@ -43,11 +44,20 @@ export const TableBody:React.FC<TableBodyProps> = ({columns, tableData}) => {
 
 type ActionRowProps = {
     id: string
+    type?: string
 }
 
-const ActionRow:React.FC<ActionRowProps> = ({id}) => {
-    
-    const {mutate} = api.workoutLog.deleteLog.useMutation({
+const ActionRow:React.FC<ActionRowProps> = ({id, type}) => {
+    const deletePlan = api.trainingPlan.deleteTrainingPlan.useMutation({
+        onSuccess: () => {
+            toast.success("Successfully deleted plan")
+        },
+        onError: (err) => {
+            toast.error("Failed to delete plan")
+        }
+    })
+
+    const deleteLog =  api.workoutLog.deleteLog.useMutation({
         onSuccess: () => {
             toast.success("Successfully deleted log")
         },
@@ -56,23 +66,31 @@ const ActionRow:React.FC<ActionRowProps> = ({id}) => {
         }
     })
 
-    const deleteLogHandler = () => {
-        mutate({id: id})
+    const deleteHandler = () => {
+        if (type === "plan") {
+            deletePlan.mutate({id: id})
+        } else {
+            deleteLog.mutate({id: id})
+        }
     }
 
     return (
         <td className="flex items-center justify-center">
-            <AiOutlineDelete size="28" onClick={deleteLogHandler}/>
-            <Link
-                href={`/log/${id}/edit`}
-            >
-                <MdOutlineModeEditOutline size="28"/>
-            </Link>
-            <Link
-                href={`/log/${id}`}
-            >
-                <CiViewList size="28"/>
-            </Link>
+            <AiOutlineDelete size="28" onClick={deleteHandler}/>
+            {type !== "plan" && (
+                <>
+                    <Link
+                        href={`/log/${id}/edit`}
+                    >
+                        <MdOutlineModeEditOutline size="28"/>
+                    </Link>
+                    <Link
+                        href={`/log/${id}/`}
+                    >
+                        <CiViewList size="28"/>
+                    </Link>
+                </>
+            )}
         </td>
     )
 }
