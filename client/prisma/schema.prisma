@@ -20,6 +20,7 @@ model TrainingPlan {
   name        String
   exercises   Exercise[]
   authorId    String
+  createdAt   DateTime @default(now())
 }
 
 model WorkoutLog {
@@ -30,6 +31,7 @@ model WorkoutLog {
   trainingPlanId  String // Follows specific training plan
   sets            Set[]
   notes           String? // metadata field
+  createdAt   DateTime @default(now())
 }
 
 model Exercise {
@@ -40,6 +42,7 @@ model Exercise {
   sets           Set[]
   belongsTo      TrainingPlan @relation(fields: [trainingId], references: [id])
   trainingId     String @db.ObjectId
+  createdAt   DateTime @default(now())
 }
 
 model Set {
@@ -53,4 +56,5 @@ model Set {
   reps       Int
   unit       String @default("lbs")
   notes      String?
+  createdAt   DateTime @default(now())
 }

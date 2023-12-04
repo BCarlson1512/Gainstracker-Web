@@ -4,6 +4,8 @@ import ChartsCard from "~/components/cards/ChartsCard";
 import DashNav from "~/components/dash/DashNav";
 import StatsCard from "~/components/cards/StatsCard";
 import { api } from "~/utils/api";
+import { ActivitiesPieChart } from "~/components/cards/Charts/ActivitiesPieChart";
+import { WeeklyActivityBar } from "~/components/cards/Charts/WeeklyActivityBar";
 
 const Dash: React.FC = () => {
 
@@ -72,10 +74,10 @@ const Dash: React.FC = () => {
                         <div className="flex-col-center">
                             <div className="grid grid-cols-3 gap-4 px-4 mr-6">
                                 <div className="col-span-3">
-                                    <ChartsCard chartHeading="Weekly Volume"/>
+                                    <WeeklyActivityBar />
                                 </div>
                                 <div className="col-span-2">
-                                    <ChartsCard chartHeading="Exercises by Muscle Group"/>
+                                    <ActivitiesPieChart />
                                 </div>
                                 <div className="col-span-1"></div>
                                 <ChartsCard chartHeading="1 Rep Maxes"/>
