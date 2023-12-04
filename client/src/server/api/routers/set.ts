@@ -19,6 +19,29 @@ export const setRouter = createTRPCRouter({
             return {err: err, msg: ""}
         }
     }),
+    getMonthlyVolume: protectedProcedure
+    .query(async({ctx}) => {
+        const {auth} = ctx;
+        const lastMonthStart = new Date();
+        lastMonthStart.setMonth(lastMonthStart.getMonth() - 1);
+        try {
+            const setCounts = await prisma.set.groupBy({
+                by:['createdAt'],
+                where: {
+                    userId: auth.userId,
+                    createdAt: {
+                        gte: lastMonthStart
+                    }
+                },
+                _count: {
+                    createdAt: true
+                }
+            })
+            return setCounts;
+        } catch(err) {
+            return {err: err, msg: ""}
+        }
+    }),
     updateSet: protectedProcedure
     .input(z.object({sid: z.string(), set: setSchema}))
     .mutation(async({input}) => {
